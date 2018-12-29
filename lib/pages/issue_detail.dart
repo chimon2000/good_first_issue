@@ -28,6 +28,7 @@ class IssueDetailPage extends StatelessWidget {
       body: Container(
         padding: EdgeInsets.all(8.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(title, style: textTheme.title),
             Divider(),
