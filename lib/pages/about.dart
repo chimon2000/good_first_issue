@@ -42,8 +42,13 @@ class AboutPage extends StatelessWidget {
                 color: theme.accentColor,
               ),
             ),
+            subtitle: Text(
+              'A software engineer of perfectly adecquate merit',
+              style:
+                  textTheme.subtitle.copyWith(color: textTheme.caption.color),
+            ),
+            isThreeLine: true,
             dense: true,
-            contentPadding: EdgeInsets.only(left: 10),
           ),
           divider(context,
               height: 2.0, width: 2, color: Theme.of(context).accentColor),
