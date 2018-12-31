@@ -47,7 +47,6 @@ class AboutPage extends StatelessWidget {
               style:
                   textTheme.subtitle.copyWith(color: textTheme.caption.color),
             ),
-            isThreeLine: true,
             dense: true,
           ),
           divider(context,
