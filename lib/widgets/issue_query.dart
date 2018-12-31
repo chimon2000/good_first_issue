@@ -83,7 +83,7 @@ class _IssueQueryState extends State<IssueQuery> {
       fetchPolicy: FetchPolicy.cacheAndNetwork,
       variables: {
         'nQuery': query,
-        'nLast': count,
+        'nLast': count > 0 ? count : widget.initialCount,
       },
     );
 
@@ -112,8 +112,10 @@ class _IssueQueryState extends State<IssueQuery> {
   @override
   void initState() {
     super.initState();
+    print('initState');
 
     if (mounted) {
+      print('executing query');
       executeQuery();
       _scrollController.addListener(_onScroll);
     }
@@ -148,6 +150,8 @@ class _IssueQueryState extends State<IssueQuery> {
     if (isLoading) {
       return LinearProgressIndicator();
     }
+
+    print(issues.length);
 
     return IssueList(
       issues: issues,
