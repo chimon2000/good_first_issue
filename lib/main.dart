@@ -33,7 +33,7 @@ class GoodFirstIssueApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Good First Issue',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.blueGrey,
         ),
         home: HomePage(),
       ),
