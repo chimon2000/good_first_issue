@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:good_first_issue/models/projects.dart';
 import 'package:good_first_issue/pages/issue_detail.dart';
+import 'package:good_first_issue/pages/more.dart';
 import 'package:good_first_issue/widgets/search_panel.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -52,6 +53,18 @@ class HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Good First Issue'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.more_vert),
+            onPressed: () {
+              Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (context) => MorePage(), fullscreenDialog: true),
+              );
+            },
+          )
+        ],
       ),
       body: Column(
         children: <Widget>[
