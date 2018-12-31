@@ -29,10 +29,12 @@ class IssueDetailPage extends StatelessWidget {
         padding: EdgeInsets.all(8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             Text(title, style: textTheme.title),
             Divider(),
             Flexible(
+              fit: FlexFit.tight,
               child: SingleChildScrollView(
                 child: MarkdownBody(
                   data: markdown,
