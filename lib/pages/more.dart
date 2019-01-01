@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:good_first_issue/pages/about.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:launch_review/launch_review.dart';
 
 class MorePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
+    String platformStore = isIOS ? 'App Store' : 'Google Play Store';
+
     return new Scaffold(
       appBar: new AppBar(
         title: const Text('More'),
@@ -13,8 +17,14 @@ class MorePage extends StatelessWidget {
         children: <Widget>[
           ListTile(
             leading: Icon(Icons.star),
-            title: Text('Rate on Google Play'),
-            onTap: () {},
+            title: Text('Rate on $platformStore'),
+            onTap: () {
+              try {
+                LaunchReview.launch();
+              } catch (e) {
+                throw 'Could not launch app review';
+              }
+            },
           ),
           ListTile(
             leading: Icon(Icons.bug_report),
