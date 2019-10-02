@@ -9,11 +9,13 @@ class IssueQuery extends StatefulWidget {
   final String organization;
   final int initialCount;
   final GraphQLClient client;
+  final ScrollController scrollController;
 
   IssueQuery({
     @required this.organization,
     @required this.initialCount,
     @required this.client,
+    @required this.scrollController
   });
 
   @override
@@ -31,7 +33,7 @@ class _IssueQueryState extends State<IssueQuery> {
   List<GraphQLError> errors;
   Timer _debounce;
 
-  final _scrollController = ScrollController();
+  ScrollController _scrollController;
   final _scrollThreshold = 200.0;
 
   void _onScroll() {
@@ -122,14 +124,9 @@ class _IssueQueryState extends State<IssueQuery> {
     if (mounted) {
       print('executing query');
       executeQuery();
+      _scrollController = widget.scrollController;
       _scrollController.addListener(_onScroll);
     }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _scrollController.dispose();
   }
 
   @override

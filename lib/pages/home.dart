@@ -12,7 +12,23 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
+  final ScrollController _scrollController = ScrollController();
+  final Duration _scrollDuration = const Duration(milliseconds: 1000);
   var organization = 'flutter';
+
+  void _scrollOnTop() {
+    _scrollController.animateTo(
+        _scrollController.position.minScrollExtent,
+        duration: _scrollDuration,
+        curve: Curves.easeIn
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +48,13 @@ class HomePageState extends State<HomePage> {
           )
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+          elevation: 10.0,
+          highlightElevation: 15.0,
+          backgroundColor: Colors.white,
+          onPressed: () => _scrollOnTop(),
+          child: Icon(Icons.arrow_upward, color: Colors.grey)
+      ),
       body: Column(
         children: <Widget>[
           SearchPanel(
@@ -49,6 +72,7 @@ class HomePageState extends State<HomePage> {
                   client: client,
                   organization: organization,
                   initialCount: 50,
+                  scrollController: _scrollController,
                 );
               },
             ),
