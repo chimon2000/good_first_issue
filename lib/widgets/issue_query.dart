@@ -53,6 +53,11 @@ class _IssueQueryState extends State<IssueQuery> {
     });
   }
 
+  Future<void> _refreshIssuesList() async {
+    print("Start refresh issues list");
+    executeQuery();
+  }
+
   void executeQuery({fetchingMore = false}) {
     final query = projects[widget.organization]['q'];
     String document = """
@@ -153,9 +158,16 @@ class _IssueQueryState extends State<IssueQuery> {
 
     print(issues.length);
 
-    return IssueList(
-      issues: issues,
-      controller: _scrollController,
+    return Container(
+      child: Center(
+        child: RefreshIndicator(
+          onRefresh: () => _refreshIssuesList(),
+          child: IssueList(
+            issues: issues,
+            controller: _scrollController,
+          ),
+        ),
+      ),
     );
   }
 }
