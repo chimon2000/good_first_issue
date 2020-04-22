@@ -11,12 +11,11 @@ class IssueQuery extends StatefulWidget {
   final GraphQLClient client;
   final ScrollController scrollController;
 
-  IssueQuery({
-    @required this.organization,
-    @required this.initialCount,
-    @required this.client,
-    @required this.scrollController
-  });
+  IssueQuery(
+      {@required this.organization,
+      @required this.initialCount,
+      @required this.client,
+      @required this.scrollController});
 
   @override
   _IssueQueryState createState() => _IssueQueryState();
@@ -100,8 +99,8 @@ class _IssueQueryState extends State<IssueQuery> {
 
     widget.client.query(queryOptions).then((result) {
       setState(() {
-        if (result.errors != null) {
-          errors = result.errors;
+        if (result.exception != null) {
+          errors = result.exception.graphqlErrors;
         } else {
           isLoading = result.loading;
           issues = result.data['search']['edges'];
