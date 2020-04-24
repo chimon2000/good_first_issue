@@ -15,16 +15,27 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  flutter_markdown: ^0.3.5
+  flutter_state_notifier: ^0.4.1
+  freezed_annotation: ^0.7.1
   graphql_flutter: ^3.0.1
   html2md: ^0.5.1
-  flutter_markdown: ^0.3.5
-  share: ^0.6.4
-  url_launcher: ^5.4.5
   launch_review: ^2.0.0
+  provider: ^4.0.5
+  remote_state: ^0.19.0
+  share: ^0.6.4
+  state_notifier: ^0.4.0
+  url_launcher: ^5.4.5
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
     
+  build_runner: ^1.7.2
+  freezed: ^0.10.6
+  json_serializable: ^3.2.3
+  pedantic: ^1.8.0+1
+  
 flutter:
   uses-material-design: true
