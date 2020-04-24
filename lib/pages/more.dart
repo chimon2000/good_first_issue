@@ -9,8 +9,8 @@ class MorePage extends StatelessWidget {
     bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
     String platformStore = isIOS ? 'App Store' : 'Google Play Store';
 
-    return new Scaffold(
-      appBar: new AppBar(
+    return Scaffold(
+      appBar: AppBar(
         title: const Text('More'),
       ),
       body: ListView(
