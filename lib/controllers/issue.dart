@@ -1,7 +1,5 @@
-import 'package:good_first_issue/models/issue.dart';
 import 'package:good_first_issue/models/issue_query_result.dart';
 import 'package:good_first_issue/services/issue.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:remote_state/remote_state.dart';
 import 'package:state_notifier/state_notifier.dart';
 
@@ -48,6 +46,3 @@ class IssueController extends StateNotifier<RemoteState<IssuesQueryResult>>
     }
   }
 }
-
-typedef FetchMoreFn = dynamic Function(FetchMoreOptions);
-typedef RefetchFn = Future<QueryResult> Function();
