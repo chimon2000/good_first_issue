@@ -1,15 +1,20 @@
+import 'package:colorize_lumberdash/colorize_lumberdash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:good_first_issue/controllers/issue.dart';
 import 'package:good_first_issue/models/issue_query_result.dart';
 import 'package:good_first_issue/pages/home.dart';
 import 'package:good_first_issue/services/issue.dart';
+import 'package:good_first_issue/services/review.dart';
+import 'package:good_first_issue/services/services.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:lumberdash/lumberdash.dart';
 import 'package:provider/provider.dart';
 import 'package:remote_state/remote_state.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  putLumberdashToWork(withClients: [ColorizeLumberdash()]);
   HttpLink link = HttpLink(
     uri: 'https://api.github.com/graphql',
     headers: <String, String>{
@@ -39,6 +44,8 @@ class GoodFirstIssueApp extends StatelessWidget {
       client: client,
       child: MultiProvider(
         providers: [
+          Provider<LinkService>(create: (_) => LinkService()),
+          Provider<ReviewService>(create: (_) => ReviewService()),
           Provider<IssueService>(create: (_) => IssueService(client.value)),
           StateNotifierProvider<IssueController,
               RemoteState<IssuesQueryResult>>(
