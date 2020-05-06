@@ -1,13 +1,14 @@
+import 'package:good_first_issue/core/utils/logger.dart';
 import 'package:good_first_issue/models/issue_query_result.dart';
 import 'package:good_first_issue/services/issue.dart';
 import 'package:remote_state/remote_state.dart';
 import 'package:state_notifier/state_notifier.dart';
 
 class IssueController extends StateNotifier<RemoteState<IssuesQueryResult>>
-    with LocatorMixin {
+    with LocatorMixin, ReporterMixin {
   IssueService get issueService => read<IssueService>();
 
-  IssueController() : super(RemoteState.initial());
+  IssueController() : super(RemoteState<IssuesQueryResult>.initial());
 
   fetchMoreIssues({String organization, int last = 25, String after}) async {
     state = state.maybeWhen(
@@ -29,6 +30,7 @@ class IssueController extends StateNotifier<RemoteState<IssuesQueryResult>>
               )),
           orElse: () => RemoteState.success(result));
     } catch (e) {
+      logError(e);
       state = RemoteState.error();
     }
   }
@@ -42,6 +44,7 @@ class IssueController extends StateNotifier<RemoteState<IssuesQueryResult>>
 
       state = RemoteState.success(result);
     } catch (e) {
+      logError(e);
       state = RemoteState.error();
     }
   }
