@@ -5,6 +5,7 @@ import 'package:good_first_issue/pages/issue_detail.dart';
 import 'package:good_first_issue/pages/more.dart';
 import 'package:good_first_issue/widgets/issue_list.dart';
 import 'package:good_first_issue/widgets/search_panel.dart';
+import 'package:good_first_issue/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:remote_state/remote_state.dart';
 
@@ -13,6 +14,11 @@ class HomePage extends StatefulWidget {
   HomePageState createState() {
     return HomePageState();
   }
+
+  @visibleForTesting
+  static const scrollToTopButtonKey = 'Scroll To Top Button';
+  @visibleForTesting
+  static const moreButtonKey = 'More Button';
 }
 
 class HomePageState extends State<HomePage> {
@@ -22,8 +28,10 @@ class HomePageState extends State<HomePage> {
   var organization = 'flutter';
 
   void _scrollOnTop() {
-    _scrollController.animateTo(_scrollController.position.minScrollExtent,
-        duration: _scrollDuration, curve: Curves.easeIn);
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(_scrollController.position.minScrollExtent,
+          duration: _scrollDuration, curve: Curves.easeIn);
+    }
   }
 
   @override
@@ -49,18 +57,14 @@ class HomePageState extends State<HomePage> {
         title: Text('Good First Issue'),
         actions: <Widget>[
           IconButton(
+            key: Key(HomePage.moreButtonKey),
             icon: Icon(Icons.more_vert),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => MorePage(), fullscreenDialog: true),
-              );
-            },
+            onPressed: () => Navigator.of(context).push(MorePage.route()),
           )
         ],
       ),
       floatingActionButton: FloatingActionButton(
+          key: Key(HomePage.scrollToTopButtonKey),
           elevation: 10.0,
           highlightElevation: 15.0,
           backgroundColor: Colors.white,
@@ -87,20 +91,20 @@ class HomePageState extends State<HomePage> {
 
   _buildIssueList(BuildContext context) {
     var queryResultState = Provider.of<RemoteState<IssuesQueryResult>>(context);
+
     return queryResultState.when(
-      initial: () => Container(),
+      initial: () => InitialCard(),
       loading: () => LinearProgressIndicator(),
       success: (state) => state.issues.isEmpty
-          ? Container()
+          ? EmptyCard()
           : Container(
               child: Center(
                 child: RefreshIndicator(
                   onRefresh: () =>
                       _issueController.getIssues(organization: organization),
                   child: IssueList(
-                    onIssueTap: (issue) {
-                      Navigator.of(context).push(IssueDetailPage.route(issue));
-                    },
+                    onIssueTap: (issue) => Navigator.of(context)
+                        .push(IssueDetailPage.route(issue)),
                     onFetchMore: () {
                       _issueController.fetchMoreIssues(
                           organization: organization, after: state.endCursor);

@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:good_first_issue/pages/about.dart';
+import 'package:good_first_issue/services/link.dart';
+import 'package:good_first_issue/services/services.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:launch_review/launch_review.dart';
 
 class MorePage extends StatelessWidget {
+  static Route<void> route() => MaterialPageRoute(
+      builder: (context) => MorePage(), fullscreenDialog: true);
+
   @override
   Widget build(BuildContext context) {
     bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
@@ -19,11 +25,7 @@ class MorePage extends StatelessWidget {
             leading: Icon(Icons.star),
             title: Text('Rate on $platformStore'),
             onTap: () {
-              try {
-                LaunchReview.launch();
-              } catch (e) {
-                throw 'Could not launch app review';
-              }
+              Provider.of<ReviewService>(context, listen: false).launchReview();
             },
           ),
           ListTile(
@@ -31,14 +33,12 @@ class MorePage extends StatelessWidget {
             title: Text('Issue tracker'),
             subtitle: Text('Report issue or suggest features'),
             onTap: () async {
+              var linkService =
+                  Provider.of<LinkService>(context, listen: false);
               const url =
                   "https://github.com/chimon2000/good_first_issue/issues";
 
-              if (await canLaunch(url)) {
-                await launch(url);
-              } else {
-                throw 'Could not launch $url';
-              }
+              await linkService.launchLink(url);
             },
           ),
           ListTile(
@@ -46,13 +46,7 @@ class MorePage extends StatelessWidget {
             title: Text('About'),
             subtitle: Text('Contributors and support'),
             onTap: () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) {
-                    return AboutPage();
-                  },
-                ),
-              );
+              Navigator.of(context).pushReplacement(AboutPage.route());
             },
           ),
         ],
