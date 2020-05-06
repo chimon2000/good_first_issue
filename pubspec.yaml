@@ -23,7 +23,7 @@ dependencies:
   html2md: ^0.5.1
   launch_review: ^2.0.0
   provider: ^4.0.5
-  remote_state: ^0.19.0
+  remote_state: ^1.0.0
   share: ^0.6.4
   state_notifier: ^0.4.0
   url_launcher: ^5.4.5

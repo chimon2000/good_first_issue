@@ -90,29 +90,30 @@ class HomePageState extends State<HomePage> {
     return queryResultState.when(
       initial: () => Container(),
       loading: () => LinearProgressIndicator(),
-      success: (state) => Container(
-        child: Center(
-          child: RefreshIndicator(
-            onRefresh: () =>
-                _issueController.getIssues(organization: organization),
-            child: IssueList(
-              onIssueTap: (issue) {
-                Navigator.of(context).push(IssueDetailPage.route(issue));
-              },
-              onFetchMore: () {
-                _issueController.fetchMoreIssues(
-                    organization: organization, after: state.endCursor);
-              },
-              issues: state.issues,
-              controller: _scrollController,
-              hasNextPage: state.hasNextPage,
-              isFetchingMore: state.isFetchingMore,
+      success: (state) => state.issues.isEmpty
+          ? Container()
+          : Container(
+              child: Center(
+                child: RefreshIndicator(
+                  onRefresh: () =>
+                      _issueController.getIssues(organization: organization),
+                  child: IssueList(
+                    onIssueTap: (issue) {
+                      Navigator.of(context).push(IssueDetailPage.route(issue));
+                    },
+                    onFetchMore: () {
+                      _issueController.fetchMoreIssues(
+                          organization: organization, after: state.endCursor);
+                    },
+                    issues: state.issues,
+                    controller: _scrollController,
+                    hasNextPage: state.hasNextPage,
+                    isFetchingMore: state.isFetchingMore,
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
-      empty: () => Container(),
-      error: (error) => Text(error),
+      error: (error, _) => Text(error),
     );
   }
 }
