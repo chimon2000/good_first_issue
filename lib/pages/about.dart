@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutPage extends StatelessWidget {
+  static Route<dynamic> route() {
+    return MaterialPageRoute(builder: (context) {
+      return AboutPage();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
