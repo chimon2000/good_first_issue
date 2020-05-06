@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:good_first_issue/core/utils/logger.dart';
 import 'package:good_first_issue/core/utils/utils.dart';
 import 'package:good_first_issue/models/issue.dart';
 import 'package:good_first_issue/models/issue_query_result.dart';
@@ -5,7 +8,7 @@ import 'package:good_first_issue/models/projects.dart';
 import 'package:meta/meta.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-class IssueService {
+class IssueService with ReporterMixin {
   final GraphQLClient client;
 
   IssueService(this.client);
@@ -28,6 +31,12 @@ class IssueService {
     );
     var result = await client.query(options);
 
+    if (result.hasException) {
+      _logOperationException(result.exception);
+
+      throw result.exception;
+    }
+
     var jsonList = pathOr<List<dynamic>>([], 'search.edges', result.data);
     var maxCount = path<int>('search.issueCount', result.data);
     var fetchMoreCursor =
@@ -44,6 +53,18 @@ class IssueService {
       endCursor: fetchMoreCursor,
       hasNextPage: hasNextPage,
     );
+  }
+
+  _logOperationException(OperationException exception) {
+    exception.graphqlErrors.forEach((error) => logWarning(
+          error.message,
+          extras: {
+            'path': error.path.join(', '),
+            'extensions': jsonEncode(error.extensions),
+          },
+        ));
+
+    logError(exception);
   }
 }
 
