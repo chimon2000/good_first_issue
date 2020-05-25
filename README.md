@@ -1,10 +1,14 @@
-<h1 align="center">Good First Issue</h3>
-
+<h1 align="center">Good First Issue</h1>
 
 <p align="center">
   An app for finding issues targeted towards newcomers to open source projects.
+  <br/>
+  <img alt="Build status" src="https://github.com/chimon2000/good_first_issue/workflows/Test/badge.svg">
+  <a href="https://codecov.io/gh/chimon2000/good_first_issue">
+    <img alt="Code coverage" src="https://codecov.io/gh/chimon2000/good_first_issue/branch/master/graph/badge.svg" />
+  </a>
+  <img alt="License" src="https://img.shields.io/github/license/chimon2000/good_first_issue?color=blue">
 </p>
-
 
 ## Prerequisites
 
