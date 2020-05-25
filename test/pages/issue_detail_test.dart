@@ -8,7 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:good_first_issue/models/issue.dart';
-import 'package:good_first_issue/pages/issue_detail.dart';
+import 'package:good_first_issue/ui/pages/issue_detail.dart';
 import 'package:good_first_issue/services/services.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';

@@ -1,5 +1,5 @@
 import 'package:good_first_issue/services/services.dart';
-import 'package:good_first_issue/stores/stores.dart';
+import 'package:good_first_issue/ui/stores/stores.dart';
 import 'package:graphql/client.dart';
 import 'package:mockito/mockito.dart';
 import 'package:remote_state/remote_state.dart';

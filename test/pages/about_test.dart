@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:good_first_issue/pages/about.dart';
+import 'package:good_first_issue/ui/pages/about.dart';
 
 import '../_util/wrapper.dart';
 

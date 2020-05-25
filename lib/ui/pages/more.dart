@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:good_first_issue/pages/about.dart';
+import 'package:good_first_issue/ui/pages/about.dart';
 import 'package:good_first_issue/services/link.dart';
 import 'package:good_first_issue/services/services.dart';
 import 'package:provider/provider.dart';

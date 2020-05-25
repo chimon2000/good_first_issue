@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
-import 'package:good_first_issue/stores/stores.dart';
+import 'package:good_first_issue/ui/stores/stores.dart';
 import 'package:good_first_issue/models/issue_query_result.dart';
 import 'package:good_first_issue/services/issue.dart';
 import 'package:good_first_issue/services/services.dart';

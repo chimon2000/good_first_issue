@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:good_first_issue/models/issue_query_result.dart';
-import 'package:good_first_issue/pages/issue_detail.dart';
-import 'package:good_first_issue/pages/more.dart';
-import 'package:good_first_issue/stores/stores.dart';
-import 'package:good_first_issue/widgets/issue_list.dart';
-import 'package:good_first_issue/widgets/search_panel.dart';
-import 'package:good_first_issue/widgets/widgets.dart';
+import 'package:good_first_issue/ui/pages/issue_detail.dart';
+import 'package:good_first_issue/ui/pages/more.dart';
+import 'package:good_first_issue/ui/stores/stores.dart';
+import 'package:good_first_issue/ui/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:remote_state/remote_state.dart';
 
