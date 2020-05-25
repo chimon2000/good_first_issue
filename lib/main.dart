@@ -1,12 +1,12 @@
 import 'package:colorize_lumberdash/colorize_lumberdash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
-import 'package:good_first_issue/controllers/issue.dart';
 import 'package:good_first_issue/models/issue_query_result.dart';
 import 'package:good_first_issue/pages/home.dart';
 import 'package:good_first_issue/services/issue.dart';
 import 'package:good_first_issue/services/review.dart';
 import 'package:good_first_issue/services/services.dart';
+import 'package:good_first_issue/stores/issue_store.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:lumberdash/lumberdash.dart';
 import 'package:provider/provider.dart';
@@ -47,9 +47,9 @@ class GoodFirstIssueApp extends StatelessWidget {
           Provider<LinkService>(create: (_) => LinkService()),
           Provider<ReviewService>(create: (_) => ReviewService()),
           Provider<IssueService>(create: (_) => IssueService(client.value)),
-          StateNotifierProvider<IssueController,
+          StateNotifierProvider<IssueStore,
               RemoteState<IssuesQueryResult>>(
-            create: (_) => IssueController(),
+            create: (_) => IssueStore(),
           ),
         ],
         child: MaterialApp(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
-import 'package:good_first_issue/controllers/issue.dart';
+import 'package:good_first_issue/stores/stores.dart';
 import 'package:good_first_issue/models/issue_query_result.dart';
 import 'package:good_first_issue/services/issue.dart';
 import 'package:good_first_issue/services/services.dart';
@@ -61,8 +61,8 @@ List<SingleChildWidget> _setupProviders(List<SingleChildWidget> overrides) {
     Provider<ReviewService>(create: (_) => mockReviewService),
     Provider<LinkService>(create: (_) => mockLinkService),
     Provider<IssueService>.value(value: mockIssueService),
-    StateNotifierProvider<IssueController, RemoteState<IssuesQueryResult>>(
-      create: (_) => IssueController(),
+    StateNotifierProvider<IssueStore, RemoteState<IssuesQueryResult>>(
+      create: (_) => IssueStore(),
     ),
   ].distinctBy((it) => it.runtimeType).toList();
 }

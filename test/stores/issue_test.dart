@@ -1,5 +1,5 @@
-import 'package:good_first_issue/controllers/issue.dart';
 import 'package:good_first_issue/services/services.dart';
+import 'package:good_first_issue/stores/stores.dart';
 import 'package:graphql/client.dart';
 import 'package:mockito/mockito.dart';
 import 'package:remote_state/remote_state.dart';
@@ -15,7 +15,7 @@ void main() {
     when(client.query(any))
         .thenAnswer((_) async => QueryResult(data: mockData));
 
-    final issueController = IssueController()
+    final issueController = IssueStore()
       ..debugMockDependency(issueService);
 
     expect(issueController.debugState.isInitial, true);
@@ -29,7 +29,7 @@ void main() {
     when(client.query(any))
         .thenAnswer((_) async => QueryResult(data: mockData));
 
-    final issueController = IssueController()
+    final issueController = IssueStore()
       ..debugMockDependency(issueService);
 
     expect(issueController.debugState.isInitial, true);
@@ -53,7 +53,7 @@ void main() {
     when(client.query(any))
         .thenAnswer((_) async => QueryResult(exception: OperationException()));
 
-    final issueController = IssueController()
+    final issueController = IssueStore()
       ..debugMockDependency(issueService);
 
     expect(issueController.debugState.isInitial, true);

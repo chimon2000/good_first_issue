@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:good_first_issue/controllers/issue.dart';
 import 'package:good_first_issue/models/issue_query_result.dart';
 import 'package:good_first_issue/pages/issue_detail.dart';
 import 'package:good_first_issue/pages/more.dart';
+import 'package:good_first_issue/stores/stores.dart';
 import 'package:good_first_issue/widgets/issue_list.dart';
 import 'package:good_first_issue/widgets/search_panel.dart';
 import 'package:good_first_issue/widgets/widgets.dart';
@@ -24,7 +24,7 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   final ScrollController _scrollController = ScrollController();
   final Duration _scrollDuration = const Duration(milliseconds: 1000);
-  IssueController _issueController;
+  IssueStore _issueController;
   var organization = 'flutter';
 
   void _scrollOnTop() {
@@ -36,7 +36,7 @@ class HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    _issueController = Provider.of<IssueController>(context, listen: false);
+    _issueController = Provider.of<IssueStore>(context, listen: false);
 
     Future.microtask(() {
       _issueController.getIssues(organization: organization);

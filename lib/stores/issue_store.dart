@@ -4,13 +4,13 @@ import 'package:good_first_issue/services/issue.dart';
 import 'package:remote_state/remote_state.dart';
 import 'package:state_notifier/state_notifier.dart';
 
-class IssueController extends StateNotifier<RemoteState<IssuesQueryResult>>
+class IssueStore extends StateNotifier<RemoteState<IssuesQueryResult>>
     with LocatorMixin, ReporterMixin {
   IssueService get issueService => read<IssueService>();
 
-  IssueController() : super(RemoteState<IssuesQueryResult>.initial());
+  IssueStore() : super(RemoteState<IssuesQueryResult>.initial());
 
-  fetchMoreIssues({String organization, int last = 25, String after}) async {
+   Future<void> fetchMoreIssues({String organization, int last = 25, String after}) async {
     state = state.maybeWhen(
         success: (state) =>
             RemoteState.success(state.copyWith(isFetchingMore: true)),
@@ -35,7 +35,7 @@ class IssueController extends StateNotifier<RemoteState<IssuesQueryResult>>
     }
   }
 
-  getIssues({String organization, int last = 25}) async {
+  Future<void> getIssues({String organization, int last = 25}) async {
     state = RemoteState.loading();
 
     try {
