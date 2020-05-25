@@ -72,3 +72,4 @@ build/
 
 **/developer_key.jks
 **/key.properties
+.flutter-plugins-dependencies
