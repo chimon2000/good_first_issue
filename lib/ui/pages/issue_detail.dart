@@ -1,25 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:good_first_issue/models/issue.dart';
+import 'package:good_first_issue/services/link.dart';
 import 'package:html2md/html2md.dart' as html2md;
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:share/share.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:provider/provider.dart';
 
 class IssueDetailPage extends StatelessWidget {
-  final issue;
+  static Route<dynamic> route(Issue issue) {
+    return MaterialPageRoute(builder: (context) {
+      return IssueDetailPage(issue: issue);
+    });
+  }
+
+  final Issue issue;
 
   IssueDetailPage({@required this.issue});
 
   @override
   Widget build(BuildContext context) {
+    final linkService = Provider.of<LinkService>(context);
     final TextTheme textTheme = Theme.of(context).textTheme;
     final buttonColor = Theme.of(context).accentColor;
     final buttonTextColor = Theme.of(context).accentTextTheme.button.color;
 
-    var title = issue['node']['title'];
-    var url = issue['node']['url'];
-    var bodyHTML = issue['node']['bodyHTML'];
+    var url = issue.url;
 
-    String markdown = html2md.convert(bodyHTML);
+    String markdown = html2md.convert(issue.bodyHTML);
 
     return Scaffold(
       appBar: AppBar(
@@ -31,19 +37,15 @@ class IssueDetailPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(title, style: textTheme.title),
+            Text(issue.title, style: textTheme.title),
             Divider(),
             Flexible(
               fit: FlexFit.tight,
               child: SingleChildScrollView(
                 child: MarkdownBody(
                   data: markdown,
-                  onTapLink: (String url) async {
-                    if (await canLaunch(url)) {
-                      await launch(url);
-                    } else {
-                      throw 'Could not launch $url';
-                    }
+                  onTapLink: (url) {
+                    linkService.launchLink(url);
                   },
                 ),
               ),
@@ -51,23 +53,21 @@ class IssueDetailPage extends StatelessWidget {
             ButtonBar(
               children: <Widget>[
                 RaisedButton(
+                  key: Key(startButtonKey),
                   child: Text("Start"),
                   color: buttonColor,
                   textColor: buttonTextColor,
-                  onPressed: () async {
-                    if (await canLaunch(url)) {
-                      await launch(url);
-                    } else {
-                      throw 'Could not launch $url';
-                    }
+                  onPressed: () {
+                    linkService.launchLink(url);
                   },
                 ),
                 RaisedButton(
+                  key: Key(shareButtonKey),
                   child: Text("Share Issue"),
                   color: buttonColor,
                   textColor: buttonTextColor,
                   onPressed: () {
-                    Share.share('Check out this issue $url');
+                    linkService.share('Check out this issue $url');
                   },
                 ),
               ],
@@ -77,4 +77,11 @@ class IssueDetailPage extends StatelessWidget {
       ),
     );
   }
+
+  @visibleForTesting
+  static const startButtonKey = 'Start Button';
+  @visibleForTesting
+  static const shareButtonKey = 'Share Button';
 }
+
+extension IssueDetailPageKeys on IssueDetailPage {}
