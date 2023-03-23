@@ -1,4 +1,4 @@
-package dev.cancode.goodfirstissue
+package app.goodfirstissue.app
 
 import io.flutter.embedding.android.FlutterActivity
 
