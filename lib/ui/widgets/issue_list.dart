@@ -2,22 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:good_first_issue/models/issue.dart';
 
 class IssueList extends StatelessWidget {
+  const IssueList({
+    super.key,
+    required this.issues,
+    required this.onFetchMore,
+    this.hasNextPage = false,
+    this.isFetchingMore = false,
+    required this.onIssueTap,
+  });
+
   final List<Issue> issues;
   final VoidCallback onFetchMore;
   final bool hasNextPage;
   final bool isFetchingMore;
   final Function(Issue issue) onIssueTap;
-
-  final ScrollController controller;
-
-  IssueList({
-    @required this.issues,
-    @required this.onFetchMore,
-    this.hasNextPage,
-    this.isFetchingMore,
-    @required this.onIssueTap,
-    @required this.controller,
-  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +23,13 @@ class IssueList extends StatelessWidget {
       children: [
         Expanded(
           child: ListView.separated(
-            controller: controller,
             itemCount: issues.length + 1,
-            separatorBuilder: (context, index) => Divider(height: 5),
+            separatorBuilder: (context, index) => const Divider(height: 5),
             itemBuilder: (context, index) {
               if (index == issues.length) {
                 return hasNextPage
-                    ? FlatButton(
-                        child: Text('Load more'),
+                    ? TextButton(
+                        child: const Text('Load more'),
                         onPressed: () {
                           onFetchMore();
                         },
@@ -55,8 +52,8 @@ class IssueList extends StatelessWidget {
           ),
         ),
         if (isFetchingMore)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 8.0),
             child: Center(
               child: CircularProgressIndicator(),
             ),

@@ -6,7 +6,7 @@ import '../_util/wrapper.dart';
 void main() {
   testWidgets('Home displays Empty when no data', (tester) async {
     await tester.pumpWidget(
-      TestWrapper(AboutPage()),
+      const TestWrapper(AboutPage()),
     );
 
     expect(find.text('@chimon1984'), findsOneWidget);

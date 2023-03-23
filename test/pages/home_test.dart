@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:good_first_issue/app_providers.dart';
 import 'package:good_first_issue/models/issue_query_result.dart';
 import 'package:good_first_issue/ui/pages/home.dart';
 import 'package:good_first_issue/ui/pages/issue_detail.dart';
 import 'package:good_first_issue/ui/pages/more.dart';
-import 'package:good_first_issue/services/issue.dart';
 import 'package:good_first_issue/ui/widgets/widgets.dart';
-import 'package:mockito/mockito.dart';
-import 'package:provider/provider.dart';
+import 'package:mocktail/mocktail.dart';
+
 import '../_util/mock_data/issues.dart';
 import '../_util/mocks.dart';
 import '../_util/wrapper.dart';
@@ -15,7 +15,7 @@ import '../_util/wrapper.dart';
 void main() {
   testWidgets('Home smoke screen', (tester) async {
     await tester.pumpWidget(
-      TestWrapper(
+      const TestWrapper(
         HomePage(),
       ),
     );
@@ -27,11 +27,11 @@ void main() {
 
     expect(find.byType(EmptyCard), findsOneWidget);
 
-    await tester.tap(find.byKey(Key(HomePage.scrollToTopButtonKey)));
+    await tester.tap(find.byKey(const Key(HomePage.scrollToTopButtonKey)));
   });
   testWidgets('Home navigates to more page', (tester) async {
     await tester.pumpWidget(
-      TestWrapper(
+      const TestWrapper(
         HomePage(),
       ),
     );
@@ -52,9 +52,9 @@ void main() {
     var mockIssueService = MockIssueService();
 
     when(
-      mockIssueService.getIssues(
-        organization: anyNamed('organization'),
-        last: anyNamed('last'),
+      () => mockIssueService.getIssues(
+        organization: any(named: 'organization'),
+        last: any(named: 'last'),
       ),
     ).thenAnswer((_) async {
       return IssuesQueryResult(
@@ -69,9 +69,9 @@ void main() {
 
     await tester.pumpWidget(
       TestWrapper(
-        HomePage(),
+        const HomePage(),
         overrides: [
-          Provider<IssueService>.value(value: mockIssueService),
+          issueServiceProvider.overrideWithValue(mockIssueService),
         ],
       ),
     );
@@ -83,7 +83,7 @@ void main() {
 
     expect(find.text(issues[0].title), findsOneWidget);
 
-    await tester.tap(find.byKey(Key(HomePage.scrollToTopButtonKey)));
+    await tester.tap(find.byKey(const Key(HomePage.scrollToTopButtonKey)));
 
     await tester.pump();
 

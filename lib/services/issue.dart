@@ -5,8 +5,8 @@ import 'package:good_first_issue/core/utils/utils.dart';
 import 'package:good_first_issue/models/issue.dart';
 import 'package:good_first_issue/models/issue_query_result.dart';
 import 'package:good_first_issue/models/projects.dart';
-import 'package:meta/meta.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:graphql/client.dart';
+// import 'package:graphql_flutter/graphql_flutter.dart';
 
 class IssueService with ReporterMixin {
   final GraphQLClient client;
@@ -14,14 +14,14 @@ class IssueService with ReporterMixin {
   IssueService(this.client);
 
   Future<IssuesQueryResult> getIssues({
-    @required String organization,
-    @required int last,
-    String after,
+    required String organization,
+    required int last,
+    String? after,
   }) async {
-    final query = projects[organization]['q'];
+    final query = projects[organization]!['q'];
 
     var options = QueryOptions(
-      documentNode: gql(_searchQuery),
+      document: gql(_searchQuery),
       fetchPolicy: FetchPolicy.cacheAndNetwork,
       variables: {
         'nQuery': query,
@@ -32,9 +32,9 @@ class IssueService with ReporterMixin {
     var result = await client.query(options);
 
     if (result.hasException) {
-      _logOperationException(result.exception);
+      _logOperationException(result.exception!);
 
-      throw result.exception;
+      throw result.exception!;
     }
 
     var jsonList = pathOr<List<dynamic>>([], 'search.edges', result.data);
@@ -51,18 +51,20 @@ class IssueService with ReporterMixin {
       maxCount: maxCount,
       count: count,
       endCursor: fetchMoreCursor,
-      hasNextPage: hasNextPage,
+      hasNextPage: hasNextPage ?? false,
     );
   }
 
   _logOperationException(OperationException exception) {
-    exception.graphqlErrors.forEach((error) => logWarning(
-          error.message,
-          extras: {
-            'path': error.path.join(', '),
-            'extensions': jsonEncode(error.extensions),
-          },
-        ));
+    for (var error in exception.graphqlErrors) {
+      logWarning(
+        error.message,
+        extras: {
+          'path': error.path!.join(', '),
+          'extensions': jsonEncode(error.extensions),
+        },
+      );
+    }
 
     logError(exception);
   }
@@ -75,6 +77,7 @@ String _searchQuery = r'''
             endCursor,
             hasNextPage
           }
+          issueCount
           edges {
             node {
               ... on Issue {

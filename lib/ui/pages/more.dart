@@ -1,17 +1,20 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:good_first_issue/ui/pages/about.dart';
-import 'package:good_first_issue/services/link.dart';
-import 'package:good_first_issue/services/services.dart';
-import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:launch_review/launch_review.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:good_first_issue/app_providers.dart';
 
-class MorePage extends StatelessWidget {
+import 'package:good_first_issue/ui/pages/about.dart';
+
+class MorePage extends ConsumerWidget {
+  const MorePage({super.key});
+
   static Route<void> route() => MaterialPageRoute(
-      builder: (context) => MorePage(), fullscreenDialog: true);
+        builder: (context) => const MorePage(),
+        fullscreenDialog: true,
+      );
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
     String platformStore = isIOS ? 'App Store' : 'Google Play Store';
 
@@ -21,30 +24,29 @@ class MorePage extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
+          if (!kIsWeb)
+            ListTile(
+              leading: const Icon(Icons.star),
+              title: Text('Rate on $platformStore'),
+              onTap: () {
+                ref.read(reviewServiceProvider).launchReview();
+              },
+            ),
           ListTile(
-            leading: Icon(Icons.star),
-            title: Text('Rate on $platformStore'),
-            onTap: () {
-              Provider.of<ReviewService>(context, listen: false).launchReview();
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.bug_report),
-            title: Text('Issue tracker'),
-            subtitle: Text('Report issue or suggest features'),
+            leading: const Icon(Icons.bug_report),
+            title: const Text('Issue tracker'),
+            subtitle: const Text('Report issue or suggest features'),
             onTap: () async {
-              var linkService =
-                  Provider.of<LinkService>(context, listen: false);
               const url =
                   "https://github.com/chimon2000/good_first_issue/issues";
 
-              await linkService.launchLink(url);
+              await ref.read(linkServiceProvider).launchLink(url);
             },
           ),
           ListTile(
-            leading: Icon(Icons.info_outline),
-            title: Text('About'),
-            subtitle: Text('Contributors and support'),
+            leading: const Icon(Icons.info_outline),
+            title: const Text('About'),
+            subtitle: const Text('Contributors and support'),
             onTap: () {
               Navigator.of(context).pushReplacement(AboutPage.route());
             },

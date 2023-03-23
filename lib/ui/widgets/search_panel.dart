@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:good_first_issue/models/projects.dart';
 
 class SearchPanel extends StatefulWidget {
-  final onSearchChanged;
-  final initialOrganization;
-
-  SearchPanel({
-    Key key,
-    @required this.onSearchChanged,
-    @required this.initialOrganization,
+  const SearchPanel({
+    Key? key,
+    required this.onSearchChanged,
+    required this.initialOrganization,
   }) : super(key: key);
+
+  final ValueChanged<String?> onSearchChanged;
+  final String initialOrganization;
 
   @override
   SearchPanelState createState() {
@@ -33,9 +33,9 @@ class SearchPanelState extends State<SearchPanel> {
     setState(() => isExpanded = false);
   }
 
-  void onSubmit(String newOrganization) {
+  void onSubmit(String? newOrganization) {
     setState(() {
-      organization = newOrganization;
+      organization = newOrganization ?? '';
       isExpanded = !isExpanded;
     });
 
@@ -46,65 +46,65 @@ class SearchPanelState extends State<SearchPanel> {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final TextTheme textTheme = theme.textTheme;
-    final buttonColor = Theme.of(context).accentColor;
-    final _formKey = GlobalKey<FormState>();
+    final buttonColor = Theme.of(context).colorScheme.secondary;
+    final formKey = GlobalKey<FormState>();
 
     return ExpansionPanelList(
       expansionCallback: (i, bool val) =>
           setState(() => isExpanded = !isExpanded),
       children: [
         ExpansionPanel(
-            body: Container(
-              child: Form(
-                key: _formKey,
-                child: FormField(
-                  initialValue: organization,
-                  onSaved: (String organization) {
-                    onSubmit(organization);
-                  },
-                  builder: (FormFieldState<String> field) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        SizedBox(
-                          height: 220,
-                          child: SingleChildScrollView(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: organizations(field),
-                            ),
+            body: Form(
+              key: formKey,
+              child: FormField(
+                initialValue: organization,
+                onSaved: (String? organization) {
+                  onSubmit(organization);
+                },
+                builder: (FormFieldState<String> field) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 220,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: organizations(field),
                           ),
                         ),
-                        Divider(height: 2.0),
-                        ButtonBar(
-                          children: <Widget>[
-                            FlatButton(
-                              child: Text("CANCEL"),
-                              onPressed: close,
-                            ),
-                            FlatButton(
-                              child: Text("SAVE"),
-                              textColor: buttonColor,
-                              onPressed: () {
-                                _formKey.currentState.save();
-                              },
-                            ),
-                          ],
-                        )
-                      ],
-                    );
-                  },
-                ),
+                      ),
+                      const Divider(height: 2.0),
+                      ButtonBar(
+                        children: <Widget>[
+                          TextButton(
+                            onPressed: close,
+                            child: const Text("CANCEL"),
+                          ),
+                          TextButton(
+                            style: ButtonStyle(
+                                foregroundColor: MaterialStateColor.resolveWith(
+                                    (states) => buttonColor,),),
+                            onPressed: () {
+                              formKey.currentState?.save();
+                            },
+                            child: const Text("SAVE"),
+                          ),
+                        ],
+                      )
+                    ],
+                  );
+                },
               ),
             ),
             headerBuilder: (BuildContext context, bool val) {
               return panelHeader(
                 textTheme: textTheme,
-                title: projects[organization]['name'],
+                title: projects[organization]!['name']!,
               );
             },
-            isExpanded: isExpanded),
+            isExpanded: isExpanded,),
       ],
     );
   }
@@ -113,7 +113,7 @@ class SearchPanelState extends State<SearchPanel> {
 List<Widget> organizations(FormFieldState<String> field) {
   List<Widget> widgets = [];
   for (var key in projects.keys) {
-    var title = projects[key]['name'];
+    var title = projects[key]!['name']!;
     var value = key;
 
     widgets.add(
@@ -141,8 +141,8 @@ List<Widget> organizations(FormFieldState<String> field) {
 }
 
 Widget panelHeader({
-  @required TextTheme textTheme,
-  @required String title,
+  required TextTheme textTheme,
+  required String title,
 }) {
   return Row(
     children: <Widget>[
@@ -152,7 +152,7 @@ Widget panelHeader({
           margin: const EdgeInsets.only(left: 16),
           child: Text(
             'Organization',
-            style: textTheme.subhead,
+            style: textTheme.titleMedium,
           ),
         ),
       ),
@@ -162,8 +162,8 @@ Widget panelHeader({
           margin: const EdgeInsets.only(left: 16),
           child: Text(
             title,
-            style: textTheme.caption
-                .copyWith(fontSize: textTheme.subhead.fontSize),
+            style: textTheme.bodySmall
+                ?.copyWith(fontSize: textTheme.titleMedium?.fontSize),
           ),
         ),
       ),

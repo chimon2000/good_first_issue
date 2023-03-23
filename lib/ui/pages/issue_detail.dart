@@ -1,27 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:good_first_issue/app_providers.dart';
 import 'package:good_first_issue/models/issue.dart';
-import 'package:good_first_issue/services/link.dart';
+
 import 'package:html2md/html2md.dart' as html2md;
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:provider/provider.dart';
 
-class IssueDetailPage extends StatelessWidget {
+class IssueDetailPage extends ConsumerWidget {
   static Route<dynamic> route(Issue issue) {
-    return MaterialPageRoute(builder: (context) {
-      return IssueDetailPage(issue: issue);
-    });
+    return MaterialPageRoute(
+      builder: (context) {
+        return IssueDetailPage(issue: issue);
+      },
+    );
   }
 
   final Issue issue;
 
-  IssueDetailPage({@required this.issue});
+  const IssueDetailPage({super.key, required this.issue});
 
   @override
-  Widget build(BuildContext context) {
-    final linkService = Provider.of<LinkService>(context);
+  Widget build(BuildContext context, WidgetRef ref) {
     final TextTheme textTheme = Theme.of(context).textTheme;
-    final buttonColor = Theme.of(context).accentColor;
-    final buttonTextColor = Theme.of(context).accentTextTheme.button.color;
+    final buttonColor = Theme.of(context).colorScheme.secondary;
+    final buttonTextColor = Theme.of(context).accentTextTheme.labelLarge?.color;
 
     var url = issue.url;
 
@@ -29,46 +31,52 @@ class IssueDetailPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Issue"),
+        title: const Text("Issue"),
       ),
       body: Container(
-        padding: EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(issue.title, style: textTheme.title),
-            Divider(),
+            Text(issue.title, style: textTheme.titleMedium),
+            const Divider(),
             Flexible(
               fit: FlexFit.tight,
               child: SingleChildScrollView(
                 child: MarkdownBody(
                   data: markdown,
-                  onTapLink: (url) {
-                    linkService.launchLink(url);
+                  onTapLink: (url, __, ___) {
+                    ref.read(linkServiceProvider).launchLink(url);
                   },
                 ),
               ),
             ),
             ButtonBar(
               children: <Widget>[
-                RaisedButton(
-                  key: Key(startButtonKey),
-                  child: Text("Start"),
-                  color: buttonColor,
-                  textColor: buttonTextColor,
+                ElevatedButton(
+                  key: const Key(startButtonKey),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: buttonColor,
+                    foregroundColor: buttonTextColor,
+                  ),
                   onPressed: () {
-                    linkService.launchLink(url);
+                    ref.read(linkServiceProvider).launchLink(url);
                   },
+                  child: const Text("Start"),
                 ),
-                RaisedButton(
-                  key: Key(shareButtonKey),
-                  child: Text("Share Issue"),
-                  color: buttonColor,
-                  textColor: buttonTextColor,
+                ElevatedButton(
+                  key: const Key(shareButtonKey),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: buttonColor,
+                    foregroundColor: buttonTextColor,
+                  ),
                   onPressed: () {
-                    linkService.share('Check out this issue $url');
+                    ref
+                        .read(linkServiceProvider)
+                        .share('Check out this issue $url');
                   },
+                  child: const Text("Share Issue"),
                 ),
               ],
             ),

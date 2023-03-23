@@ -8,7 +8,7 @@ import '../_util/wrapper.dart';
 void main() {
   testWidgets('More page smoke test', (tester) async {
     await tester.pumpWidget(
-      TestWrapper(MorePage()),
+      const TestWrapper(MorePage()),
     );
 
     expect(find.text('More'), findsOneWidget);
@@ -21,7 +21,7 @@ void main() {
   });
   testWidgets('More page smoke test', (tester) async {
     await tester.pumpWidget(
-      TestWrapper(MorePage()),
+      const TestWrapper(MorePage()),
     );
 
     expect(find.text('More'), findsOneWidget);

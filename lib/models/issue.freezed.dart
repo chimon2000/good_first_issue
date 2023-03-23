@@ -1,5 +1,7 @@
+// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'issue.dart';
 
@@ -8,47 +10,35 @@ part of 'issue.dart';
 // **************************************************************************
 
 T _$identity<T>(T value) => value;
+
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+
 Issue _$IssueFromJson(Map<String, dynamic> json) {
   return _Issue.fromJson(json);
 }
 
-class _$IssueTearOff {
-  const _$IssueTearOff();
-
-  _Issue call(
-      {@JsonKey() String title,
-      @JsonKey() String url,
-      @JsonKey() String bodyHTML,
-      @JsonKey() Repository repository}) {
-    return _Issue(
-      title: title,
-      url: url,
-      bodyHTML: bodyHTML,
-      repository: repository,
-    );
-  }
-}
-
-// ignore: unused_element
-const $Issue = _$IssueTearOff();
-
+/// @nodoc
 mixin _$Issue {
   @JsonKey()
-  String get title;
+  String get title => throw _privateConstructorUsedError;
   @JsonKey()
-  String get url;
+  String get url => throw _privateConstructorUsedError;
   @JsonKey()
-  String get bodyHTML;
+  String get bodyHTML => throw _privateConstructorUsedError;
   @JsonKey()
-  Repository get repository;
+  Repository get repository => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson();
-  $IssueCopyWith<Issue> get copyWith;
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $IssueCopyWith<Issue> get copyWith => throw _privateConstructorUsedError;
 }
 
+/// @nodoc
 abstract class $IssueCopyWith<$Res> {
   factory $IssueCopyWith(Issue value, $Res Function(Issue) then) =
-      _$IssueCopyWithImpl<$Res>;
+      _$IssueCopyWithImpl<$Res, Issue>;
+  @useResult
   $Res call(
       {@JsonKey() String title,
       @JsonKey() String url,
@@ -58,44 +48,59 @@ abstract class $IssueCopyWith<$Res> {
   $RepositoryCopyWith<$Res> get repository;
 }
 
-class _$IssueCopyWithImpl<$Res> implements $IssueCopyWith<$Res> {
+/// @nodoc
+class _$IssueCopyWithImpl<$Res, $Val extends Issue>
+    implements $IssueCopyWith<$Res> {
   _$IssueCopyWithImpl(this._value, this._then);
 
-  final Issue _value;
   // ignore: unused_field
-  final $Res Function(Issue) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object title = freezed,
-    Object url = freezed,
-    Object bodyHTML = freezed,
-    Object repository = freezed,
+    Object? title = null,
+    Object? url = null,
+    Object? bodyHTML = null,
+    Object? repository = null,
   }) {
     return _then(_value.copyWith(
-      title: title == freezed ? _value.title : title as String,
-      url: url == freezed ? _value.url : url as String,
-      bodyHTML: bodyHTML == freezed ? _value.bodyHTML : bodyHTML as String,
-      repository:
-          repository == freezed ? _value.repository : repository as Repository,
-    ));
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      url: null == url
+          ? _value.url
+          : url // ignore: cast_nullable_to_non_nullable
+              as String,
+      bodyHTML: null == bodyHTML
+          ? _value.bodyHTML
+          : bodyHTML // ignore: cast_nullable_to_non_nullable
+              as String,
+      repository: null == repository
+          ? _value.repository
+          : repository // ignore: cast_nullable_to_non_nullable
+              as Repository,
+    ) as $Val);
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $RepositoryCopyWith<$Res> get repository {
-    if (_value.repository == null) {
-      return null;
-    }
     return $RepositoryCopyWith<$Res>(_value.repository, (value) {
-      return _then(_value.copyWith(repository: value));
+      return _then(_value.copyWith(repository: value) as $Val);
     });
   }
 }
 
-abstract class _$IssueCopyWith<$Res> implements $IssueCopyWith<$Res> {
-  factory _$IssueCopyWith(_Issue value, $Res Function(_Issue) then) =
-      __$IssueCopyWithImpl<$Res>;
+/// @nodoc
+abstract class _$$_IssueCopyWith<$Res> implements $IssueCopyWith<$Res> {
+  factory _$$_IssueCopyWith(_$_Issue value, $Res Function(_$_Issue) then) =
+      __$$_IssueCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {@JsonKey() String title,
       @JsonKey() String url,
@@ -106,41 +111,52 @@ abstract class _$IssueCopyWith<$Res> implements $IssueCopyWith<$Res> {
   $RepositoryCopyWith<$Res> get repository;
 }
 
-class __$IssueCopyWithImpl<$Res> extends _$IssueCopyWithImpl<$Res>
-    implements _$IssueCopyWith<$Res> {
-  __$IssueCopyWithImpl(_Issue _value, $Res Function(_Issue) _then)
-      : super(_value, (v) => _then(v as _Issue));
+/// @nodoc
+class __$$_IssueCopyWithImpl<$Res> extends _$IssueCopyWithImpl<$Res, _$_Issue>
+    implements _$$_IssueCopyWith<$Res> {
+  __$$_IssueCopyWithImpl(_$_Issue _value, $Res Function(_$_Issue) _then)
+      : super(_value, _then);
 
-  @override
-  _Issue get _value => super._value as _Issue;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object title = freezed,
-    Object url = freezed,
-    Object bodyHTML = freezed,
-    Object repository = freezed,
+    Object? title = null,
+    Object? url = null,
+    Object? bodyHTML = null,
+    Object? repository = null,
   }) {
-    return _then(_Issue(
-      title: title == freezed ? _value.title : title as String,
-      url: url == freezed ? _value.url : url as String,
-      bodyHTML: bodyHTML == freezed ? _value.bodyHTML : bodyHTML as String,
-      repository:
-          repository == freezed ? _value.repository : repository as Repository,
+    return _then(_$_Issue(
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      url: null == url
+          ? _value.url
+          : url // ignore: cast_nullable_to_non_nullable
+              as String,
+      bodyHTML: null == bodyHTML
+          ? _value.bodyHTML
+          : bodyHTML // ignore: cast_nullable_to_non_nullable
+              as String,
+      repository: null == repository
+          ? _value.repository
+          : repository // ignore: cast_nullable_to_non_nullable
+              as Repository,
     ));
   }
 }
 
+/// @nodoc
 @JsonSerializable()
 class _$_Issue implements _Issue {
   _$_Issue(
-      {@JsonKey() this.title,
-      @JsonKey() this.url,
-      @JsonKey() this.bodyHTML,
-      @JsonKey() this.repository});
+      {@JsonKey() required this.title,
+      @JsonKey() required this.url,
+      @JsonKey() required this.bodyHTML,
+      @JsonKey() required this.repository});
 
   factory _$_Issue.fromJson(Map<String, dynamic> json) =>
-      _$_$_IssueFromJson(json);
+      _$$_IssueFromJson(json);
 
   @override
   @JsonKey()
@@ -163,43 +179,41 @@ class _$_Issue implements _Issue {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Issue &&
-            (identical(other.title, title) ||
-                const DeepCollectionEquality().equals(other.title, title)) &&
-            (identical(other.url, url) ||
-                const DeepCollectionEquality().equals(other.url, url)) &&
+        (other.runtimeType == runtimeType &&
+            other is _$_Issue &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.url, url) || other.url == url) &&
             (identical(other.bodyHTML, bodyHTML) ||
-                const DeepCollectionEquality()
-                    .equals(other.bodyHTML, bodyHTML)) &&
+                other.bodyHTML == bodyHTML) &&
             (identical(other.repository, repository) ||
-                const DeepCollectionEquality()
-                    .equals(other.repository, repository)));
+                other.repository == repository));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(title) ^
-      const DeepCollectionEquality().hash(url) ^
-      const DeepCollectionEquality().hash(bodyHTML) ^
-      const DeepCollectionEquality().hash(repository);
+      Object.hash(runtimeType, title, url, bodyHTML, repository);
 
+  @JsonKey(ignore: true)
   @override
-  _$IssueCopyWith<_Issue> get copyWith =>
-      __$IssueCopyWithImpl<_Issue>(this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$_IssueCopyWith<_$_Issue> get copyWith =>
+      __$$_IssueCopyWithImpl<_$_Issue>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_IssueToJson(this);
+    return _$$_IssueToJson(
+      this,
+    );
   }
 }
 
 abstract class _Issue implements Issue {
   factory _Issue(
-      {@JsonKey() String title,
-      @JsonKey() String url,
-      @JsonKey() String bodyHTML,
-      @JsonKey() Repository repository}) = _$_Issue;
+      {@JsonKey() required final String title,
+      @JsonKey() required final String url,
+      @JsonKey() required final String bodyHTML,
+      @JsonKey() required final Repository repository}) = _$_Issue;
 
   factory _Issue.fromJson(Map<String, dynamic> json) = _$_Issue.fromJson;
 
@@ -216,95 +230,99 @@ abstract class _Issue implements Issue {
   @JsonKey()
   Repository get repository;
   @override
-  _$IssueCopyWith<_Issue> get copyWith;
+  @JsonKey(ignore: true)
+  _$$_IssueCopyWith<_$_Issue> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 Repository _$RepositoryFromJson(Map<String, dynamic> json) {
   return _Repository.fromJson(json);
 }
 
-class _$RepositoryTearOff {
-  const _$RepositoryTearOff();
-
-  _Repository call({@JsonKey() String nameWithOwner}) {
-    return _Repository(
-      nameWithOwner: nameWithOwner,
-    );
-  }
-}
-
-// ignore: unused_element
-const $Repository = _$RepositoryTearOff();
-
+/// @nodoc
 mixin _$Repository {
   @JsonKey()
-  String get nameWithOwner;
+  String get nameWithOwner => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson();
-  $RepositoryCopyWith<Repository> get copyWith;
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $RepositoryCopyWith<Repository> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
+/// @nodoc
 abstract class $RepositoryCopyWith<$Res> {
   factory $RepositoryCopyWith(
           Repository value, $Res Function(Repository) then) =
-      _$RepositoryCopyWithImpl<$Res>;
+      _$RepositoryCopyWithImpl<$Res, Repository>;
+  @useResult
   $Res call({@JsonKey() String nameWithOwner});
 }
 
-class _$RepositoryCopyWithImpl<$Res> implements $RepositoryCopyWith<$Res> {
+/// @nodoc
+class _$RepositoryCopyWithImpl<$Res, $Val extends Repository>
+    implements $RepositoryCopyWith<$Res> {
   _$RepositoryCopyWithImpl(this._value, this._then);
 
-  final Repository _value;
   // ignore: unused_field
-  final $Res Function(Repository) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object nameWithOwner = freezed,
+    Object? nameWithOwner = null,
   }) {
     return _then(_value.copyWith(
-      nameWithOwner: nameWithOwner == freezed
+      nameWithOwner: null == nameWithOwner
           ? _value.nameWithOwner
-          : nameWithOwner as String,
-    ));
+          : nameWithOwner // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
   }
 }
 
-abstract class _$RepositoryCopyWith<$Res> implements $RepositoryCopyWith<$Res> {
-  factory _$RepositoryCopyWith(
-          _Repository value, $Res Function(_Repository) then) =
-      __$RepositoryCopyWithImpl<$Res>;
+/// @nodoc
+abstract class _$$_RepositoryCopyWith<$Res>
+    implements $RepositoryCopyWith<$Res> {
+  factory _$$_RepositoryCopyWith(
+          _$_Repository value, $Res Function(_$_Repository) then) =
+      __$$_RepositoryCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({@JsonKey() String nameWithOwner});
 }
 
-class __$RepositoryCopyWithImpl<$Res> extends _$RepositoryCopyWithImpl<$Res>
-    implements _$RepositoryCopyWith<$Res> {
-  __$RepositoryCopyWithImpl(
-      _Repository _value, $Res Function(_Repository) _then)
-      : super(_value, (v) => _then(v as _Repository));
+/// @nodoc
+class __$$_RepositoryCopyWithImpl<$Res>
+    extends _$RepositoryCopyWithImpl<$Res, _$_Repository>
+    implements _$$_RepositoryCopyWith<$Res> {
+  __$$_RepositoryCopyWithImpl(
+      _$_Repository _value, $Res Function(_$_Repository) _then)
+      : super(_value, _then);
 
-  @override
-  _Repository get _value => super._value as _Repository;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object nameWithOwner = freezed,
+    Object? nameWithOwner = null,
   }) {
-    return _then(_Repository(
-      nameWithOwner: nameWithOwner == freezed
+    return _then(_$_Repository(
+      nameWithOwner: null == nameWithOwner
           ? _value.nameWithOwner
-          : nameWithOwner as String,
+          : nameWithOwner // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
 
+/// @nodoc
 @JsonSerializable()
 class _$_Repository implements _Repository {
-  _$_Repository({@JsonKey() this.nameWithOwner});
+  _$_Repository({@JsonKey() required this.nameWithOwner});
 
   factory _$_Repository.fromJson(Map<String, dynamic> json) =>
-      _$_$_RepositoryFromJson(json);
+      _$$_RepositoryFromJson(json);
 
   @override
   @JsonKey()
@@ -318,28 +336,33 @@ class _$_Repository implements _Repository {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Repository &&
+        (other.runtimeType == runtimeType &&
+            other is _$_Repository &&
             (identical(other.nameWithOwner, nameWithOwner) ||
-                const DeepCollectionEquality()
-                    .equals(other.nameWithOwner, nameWithOwner)));
+                other.nameWithOwner == nameWithOwner));
   }
 
+  @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(nameWithOwner);
+  int get hashCode => Object.hash(runtimeType, nameWithOwner);
 
+  @JsonKey(ignore: true)
   @override
-  _$RepositoryCopyWith<_Repository> get copyWith =>
-      __$RepositoryCopyWithImpl<_Repository>(this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$_RepositoryCopyWith<_$_Repository> get copyWith =>
+      __$$_RepositoryCopyWithImpl<_$_Repository>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_RepositoryToJson(this);
+    return _$$_RepositoryToJson(
+      this,
+    );
   }
 }
 
 abstract class _Repository implements Repository {
-  factory _Repository({@JsonKey() String nameWithOwner}) = _$_Repository;
+  factory _Repository({@JsonKey() required final String nameWithOwner}) =
+      _$_Repository;
 
   factory _Repository.fromJson(Map<String, dynamic> json) =
       _$_Repository.fromJson;
@@ -348,5 +371,7 @@ abstract class _Repository implements Repository {
   @JsonKey()
   String get nameWithOwner;
   @override
-  _$RepositoryCopyWith<_Repository> get copyWith;
+  @JsonKey(ignore: true)
+  _$$_RepositoryCopyWith<_$_Repository> get copyWith =>
+      throw _privateConstructorUsedError;
 }

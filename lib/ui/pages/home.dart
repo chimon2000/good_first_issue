@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:good_first_issue/models/issue_query_result.dart';
 import 'package:good_first_issue/ui/pages/issue_detail.dart';
 import 'package:good_first_issue/ui/pages/more.dart';
 import 'package:good_first_issue/ui/stores/stores.dart';
 import 'package:good_first_issue/ui/widgets/widgets.dart';
-import 'package:provider/provider.dart';
-import 'package:remote_state/remote_state.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends ConsumerStatefulWidget {
+  const HomePage({super.key});
+
   @override
   HomePageState createState() {
     return HomePageState();
@@ -19,103 +20,118 @@ class HomePage extends StatefulWidget {
   static const moreButtonKey = 'More Button';
 }
 
-class HomePageState extends State<HomePage> {
-  final ScrollController _scrollController = ScrollController();
+class HomePageState extends ConsumerState<HomePage> {
   final Duration _scrollDuration = const Duration(milliseconds: 1000);
-  IssueStore _issueController;
-  var organization = 'flutter';
 
   void _scrollOnTop() {
-    if (_scrollController.hasClients) {
-      _scrollController.animateTo(_scrollController.position.minScrollExtent,
-          duration: _scrollDuration, curve: Curves.easeIn);
+    final scrollController = PrimaryScrollController.of(context);
+    if (scrollController.hasClients) {
+      scrollController.animateTo(
+        scrollController.position.minScrollExtent,
+        duration: _scrollDuration,
+        curve: Curves.easeIn,
+      );
     }
   }
 
   @override
-  void initState() {
-    _issueController = Provider.of<IssueStore>(context, listen: false);
-
-    Future.microtask(() {
-      _issueController.getIssues(organization: organization);
-    });
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _scrollController.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final queryResultState = ref.watch(
+      issueStoreProvider(
+        IssueStoreArgs(organization: ref.watch(currentOrganizationProvider)),
+      ),
+    );
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Good First Issue'),
+        title: const Text('Good First Issue'),
         actions: <Widget>[
           IconButton(
-            key: Key(HomePage.moreButtonKey),
-            icon: Icon(Icons.more_vert),
+            key: const Key(HomePage.moreButtonKey),
+            icon: const Icon(Icons.more_vert),
             onPressed: () => Navigator.of(context).push(MorePage.route()),
           )
         ],
       ),
       floatingActionButton: FloatingActionButton(
-          key: Key(HomePage.scrollToTopButtonKey),
-          elevation: 10.0,
-          highlightElevation: 15.0,
-          backgroundColor: Colors.white,
-          onPressed: () => _scrollOnTop(),
-          child: Icon(Icons.arrow_upward, color: Colors.grey)),
+        key: const Key(HomePage.scrollToTopButtonKey),
+        elevation: 10.0,
+        highlightElevation: 15.0,
+        backgroundColor: Colors.white,
+        onPressed: () => _scrollOnTop(),
+        child: const Icon(Icons.arrow_upward, color: Colors.grey),
+      ),
       body: Column(
         children: <Widget>[
           SearchPanel(
             onSearchChanged: (organization) {
-              _issueController.getIssues(organization: organization);
-              setState(() {
-                this.organization = organization;
-              });
+              ref.read(currentOrganizationProvider.notifier).state =
+                  organization ?? 'flutter';
             },
             initialOrganization: 'flutter',
           ),
           Flexible(
-            child: _buildIssueList(context),
+            child: queryResultState.when(
+              loading: () => const LinearProgressIndicator(),
+              data: (state) => state.issues.isEmpty
+                  ? const EmptyCard()
+                  : IssueListDataView(
+                      issuesQueryResult: state,
+                    ),
+              error: (error, _) => Text(error.toString()),
+            ),
           ),
         ],
       ),
     );
   }
+}
 
-  _buildIssueList(BuildContext context) {
-    var queryResultState = Provider.of<RemoteState<IssuesQueryResult>>(context);
+class IssueListDataView extends ConsumerWidget {
+  const IssueListDataView({
+    super.key,
+    required this.issuesQueryResult,
+  });
 
-    return queryResultState.when(
-      initial: () => InitialCard(),
-      loading: () => LinearProgressIndicator(),
-      success: (state) => state.issues.isEmpty
-          ? EmptyCard()
-          : Container(
-              child: Center(
-                child: RefreshIndicator(
-                  onRefresh: () =>
-                      _issueController.getIssues(organization: organization),
-                  child: IssueList(
-                    onIssueTap: (issue) => Navigator.of(context)
-                        .push(IssueDetailPage.route(issue)),
-                    onFetchMore: () {
-                      _issueController.fetchMoreIssues(
-                          organization: organization, after: state.endCursor);
-                    },
-                    issues: state.issues,
-                    controller: _scrollController,
-                    hasNextPage: state.hasNextPage,
-                    isFetchingMore: state.isFetchingMore,
-                  ),
-                ),
-              ),
-            ),
-      error: (error, _) => Text(error),
+  final IssuesQueryResult issuesQueryResult;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Center(
+      child: RefreshIndicator(
+        onRefresh: () {
+          return Future.value(null);
+          // return ref.refresh(
+          //   issueStoreProvider(
+          //     IssueStoreArgs(
+          //       organization: ref.read(currentOrganizationProvider),
+          //     ),
+          //   ).future,
+          // );
+        },
+        child: IssueList(
+          onIssueTap: (issue) =>
+              Navigator.of(context).push(IssueDetailPage.route(issue)),
+          onFetchMore: () {
+            ref
+                .read(
+                  issueStoreProvider(
+                    IssueStoreArgs(
+                      organization: ref.read(currentOrganizationProvider),
+                    ),
+                  ).notifier,
+                )
+                .fetchMoreIssues();
+          },
+          issues: issuesQueryResult.issues,
+          hasNextPage: issuesQueryResult.hasNextPage,
+          isFetchingMore: issuesQueryResult.isFetchingMore,
+        ),
+      ),
     );
   }
 }
+
+final currentOrganizationProvider = StateProvider<String>((ref) {
+  return 'flutter';
+});
