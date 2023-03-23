@@ -1,12 +1,11 @@
 import 'dart:convert';
 
 import 'package:good_first_issue/core/utils/logger.dart';
-import 'package:good_first_issue/core/utils/utils.dart';
 import 'package:good_first_issue/models/issue.dart';
 import 'package:good_first_issue/models/issue_query_result.dart';
 import 'package:good_first_issue/models/projects.dart';
 import 'package:graphql/client.dart';
-// import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:github_api/github_api.dart';
 
 class IssueService with ReporterMixin {
   final GraphQLClient client;
@@ -19,17 +18,15 @@ class IssueService with ReporterMixin {
     String? after,
   }) async {
     final query = projects[organization]!['q'];
-
-    var options = QueryOptions(
-      document: gql(_searchQuery),
-      fetchPolicy: FetchPolicy.cacheAndNetwork,
-      variables: {
-        'nQuery': query,
-        'nLast': last,
-        'nAfter': after,
-      },
+    final options = Options$Query$ReadIssues(
+      variables: Variables$Query$ReadIssues(
+        nQuery: query!,
+        nLast: last,
+        nAfter: after,
+      ),
     );
-    var result = await client.query(options);
+
+    final result = await client.query$ReadIssues(options);
 
     if (result.hasException) {
       _logOperationException(result.exception!);
@@ -37,21 +34,28 @@ class IssueService with ReporterMixin {
       throw result.exception!;
     }
 
-    var jsonList = pathOr<List<dynamic>>([], 'search.edges', result.data);
-    var maxCount = path<int>('search.issueCount', result.data);
-    var fetchMoreCursor =
-        path<String>('search.pageInfo.endCursor', result.data);
-    var hasNextPage = path<bool>('search.pageInfo.hasNextPage', result.data);
-
-    var issues = jsonList.map((json) => Issue.fromJson(json['node'])).toList();
+    var issues = result.parsedData?.search.edges
+            ?.map((edge) => edge?.node)
+            .whereType<Query$ReadIssues$search$edges$node$$Issue>()
+            .map(
+              (e) => Issue(
+                bodyHTML: e.bodyHTML,
+                url: e.url,
+                repository:
+                    Repository(nameWithOwner: e.repository.nameWithOwner),
+                title: e.title,
+              ),
+            )
+            .toList() ??
+        [];
     var count = issues.length;
 
     return IssuesQueryResult(
       issues: issues,
-      maxCount: maxCount,
+      maxCount: result.parsedData?.search.issueCount,
       count: count,
-      endCursor: fetchMoreCursor,
-      hasNextPage: hasNextPage ?? false,
+      endCursor: result.parsedData?.search.pageInfo.endCursor,
+      hasNextPage: result.parsedData?.search.pageInfo.hasNextPage ?? false,
     );
   }
 

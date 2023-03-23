@@ -72,7 +72,7 @@ class HomePageState extends ConsumerState<HomePage> {
           ),
           Flexible(
             child: queryResultState.when(
-              loading: () => const LinearProgressIndicator(),
+              loading: () => const InitialCard(),
               data: (state) => state.issues.isEmpty
                   ? const EmptyCard()
                   : IssueListDataView(
