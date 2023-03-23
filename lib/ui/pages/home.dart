@@ -24,7 +24,7 @@ class HomePageState extends ConsumerState<HomePage> {
   final Duration _scrollDuration = const Duration(milliseconds: 1000);
 
   void _scrollOnTop() {
-    final scrollController = PrimaryScrollController.of(context);
+    final scrollController = ref.read(scrollControllerProvider);
     if (scrollController.hasClients) {
       scrollController.animateTo(
         scrollController.position.minScrollExtent,
@@ -100,16 +100,16 @@ class IssueListDataView extends ConsumerWidget {
     return Center(
       child: RefreshIndicator(
         onRefresh: () {
-          return Future.value(null);
-          // return ref.refresh(
-          //   issueStoreProvider(
-          //     IssueStoreArgs(
-          //       organization: ref.read(currentOrganizationProvider),
-          //     ),
-          //   ).future,
-          // );
+          return ref.refresh(
+            issueStoreProvider(
+              IssueStoreArgs(
+                organization: ref.read(currentOrganizationProvider),
+              ),
+            ).future,
+          );
         },
         child: IssueList(
+          scrollController: ref.watch(scrollControllerProvider),
           onIssueTap: (issue) =>
               Navigator.of(context).push(IssueDetailPage.route(issue)),
           onFetchMore: () {
@@ -134,4 +134,12 @@ class IssueListDataView extends ConsumerWidget {
 
 final currentOrganizationProvider = StateProvider<String>((ref) {
   return 'flutter';
+});
+
+final scrollControllerProvider = Provider.autoDispose<ScrollController>((ref) {
+  final controller = ScrollController();
+  ref.onDispose(() {
+    controller.dispose();
+  });
+  return controller;
 });

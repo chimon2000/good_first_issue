@@ -9,6 +9,7 @@ class IssueList extends StatelessWidget {
     this.hasNextPage = false,
     this.isFetchingMore = false,
     required this.onIssueTap,
+    this.scrollController,
   });
 
   final List<Issue> issues;
@@ -16,6 +17,7 @@ class IssueList extends StatelessWidget {
   final bool hasNextPage;
   final bool isFetchingMore;
   final Function(Issue issue) onIssueTap;
+  final ScrollController? scrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +25,7 @@ class IssueList extends StatelessWidget {
       children: [
         Expanded(
           child: ListView.separated(
+            controller: scrollController,
             itemCount: issues.length + 1,
             separatorBuilder: (context, index) => const Divider(height: 5),
             itemBuilder: (context, index) {
