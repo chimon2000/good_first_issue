@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:good_first_issue/app_providers.dart';
@@ -13,10 +15,34 @@ import '../_util/mocks.dart';
 import '../_util/wrapper.dart';
 
 void main() {
+  late MockIssueService mockIssueService;
+
+  setUp(() {
+    mockIssueService = MockIssueService();
+  });
+
   testWidgets('Home smoke screen', (tester) async {
+    when(
+      () => mockIssueService.getIssues(
+        organization: any(named: 'organization'),
+        last: any(named: 'last'),
+      ),
+    ).thenAnswer((_) async {
+      return IssuesQueryResult(
+        issues: [],
+        isFetchingMore: false,
+        hasNextPage: false,
+        count: 0,
+        maxCount: 0,
+        endCursor: '',
+      );
+    });
     await tester.pumpWidget(
-      const TestWrapper(
-        HomePage(),
+      TestWrapper(
+        const HomePage(),
+        overrides: [
+          issueServiceProvider.overrideWithValue(mockIssueService),
+        ],
       ),
     );
 
@@ -29,10 +55,23 @@ void main() {
 
     await tester.tap(find.byKey(const Key(HomePage.scrollToTopButtonKey)));
   });
+
   testWidgets('Home navigates to more page', (tester) async {
+    when(
+      () => mockIssueService.getIssues(
+        organization: any(named: 'organization'),
+        last: any(named: 'last'),
+      ),
+    ).thenAnswer((_) async {
+      return Completer<IssuesQueryResult>().future;
+    });
+
     await tester.pumpWidget(
-      const TestWrapper(
-        HomePage(),
+      TestWrapper(
+        const HomePage(),
+        overrides: [
+          issueServiceProvider.overrideWithValue(mockIssueService),
+        ],
       ),
     );
 
@@ -49,7 +88,6 @@ void main() {
   testWidgets('Home detail displays issue list when issues exist',
       (tester) async {
     var issues = getIssues();
-    var mockIssueService = MockIssueService();
 
     when(
       () => mockIssueService.getIssues(
@@ -69,10 +107,10 @@ void main() {
 
     await tester.pumpWidget(
       TestWrapper(
-        const HomePage(),
         overrides: [
           issueServiceProvider.overrideWithValue(mockIssueService),
         ],
+        const HomePage(),
       ),
     );
 
