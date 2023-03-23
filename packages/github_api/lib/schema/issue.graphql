@@ -1,0 +1,24 @@
+query ReadIssues($nQuery: String!, $nLast: Int, $nAfter: String) {
+  search(query: $nQuery, type: ISSUE, last: $nLast, after: $nAfter) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    issueCount
+    edges {
+      node {
+        ... on Issue {
+          id
+          title
+          body
+          bodyHTML
+          url
+          repository {
+            id
+            nameWithOwner
+          }
+        }
+      }
+    }
+  }
+}

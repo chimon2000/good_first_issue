@@ -1,0 +1,20 @@
+targets:
+  $default:
+    builders:
+      graphql_codegen:
+        options:
+          scalars:
+            URL:
+              type: String
+            URI:
+              type: String
+            HTML:
+              type: String
+            Base64String:
+              type: String
+            DateTime:
+              type: DateTime
+            Date:
+              type: DateTime
+          clients:
+            - graphql

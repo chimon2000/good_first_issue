@@ -1,0 +1,11 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  errors:
+    todo: info
+
+  exclude:
+    - lib/**/*.graphql.dart
+linter:
+  rules:
+    require_trailing_commas: true
