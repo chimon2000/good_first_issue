@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutPage extends StatelessWidget {
+  const AboutPage({super.key});
+
   static Route<dynamic> route() {
     return MaterialPageRoute(builder: (context) {
-      return AboutPage();
-    });
+      return const AboutPage();
+    },);
   }
 
   @override
@@ -44,43 +46,45 @@ class AboutPage extends StatelessWidget {
           ListTile(
             title: Text(
               'Author'.toUpperCase(),
-              style: textTheme.title.copyWith(
-                color: theme.accentColor,
+              style: textTheme.titleLarge?.copyWith(
+                color: theme.colorScheme.secondary,
               ),
             ),
             subtitle: Text(
               'A software engineer of perfectly adecquate merit',
-              style:
-                  textTheme.subtitle.copyWith(color: textTheme.caption.color),
+              style: textTheme.titleSmall
+                  ?.copyWith(color: textTheme.bodySmall?.color),
             ),
             dense: true,
           ),
           divider(context,
-              height: 2.0, width: 2, color: Theme.of(context).accentColor),
-        ]..addAll(
-            contactInfo.map<Widget>(
-              (info) {
-                var title = info['title'];
-                var subtitle = info['subtitle'];
-                var url = info['url'];
+              height: 2.0,
+              width: 2,
+              color: Theme.of(context).colorScheme.secondary,),
+          ...contactInfo.map<Widget>(
+            (info) {
+              var title = info['title'];
+              var subtitle = info['subtitle'];
+              var url = info['url'];
 
-                return ListTile(
-                  dense: true,
-                  title: Text(title),
-                  subtitle: subtitle.isNotEmpty ? Text(subtitle) : null,
-                  onTap: url.isNotEmpty
-                      ? () async {
-                          if (await canLaunch(url)) {
-                            await launch(url);
-                          } else {
-                            throw 'Could not launch $url';
-                          }
+              return ListTile(
+                dense: true,
+                title: Text(title!),
+                subtitle:
+                    subtitle?.isNotEmpty ?? false ? Text(subtitle!) : null,
+                onTap: url?.isNotEmpty ?? false
+                    ? () async {
+                        if (await canLaunchUrl(Uri.parse(url!))) {
+                          await launchUrl(Uri.parse(url));
+                        } else {
+                          throw 'Could not launch $url';
                         }
-                      : null,
-                );
-              },
-            ),
+                      }
+                    : null,
+              );
+            },
           ),
+        ],
       ),
     );
   }
@@ -90,7 +94,7 @@ Widget divider(
   BuildContext context, {
   double height = 1,
   double width = 1,
-  Color color,
+  required Color color,
 }) {
   return SizedBox(
     height: height,

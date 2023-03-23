@@ -6,10 +6,10 @@ part 'issue.g.dart';
 @freezed
 abstract class Issue with _$Issue {
   factory Issue({
-    @JsonKey() String title,
-    @JsonKey() String url,
-    @JsonKey() String bodyHTML,
-    @JsonKey() Repository repository,
+    @JsonKey() required String title,
+    @JsonKey() required String url,
+    @JsonKey() required String bodyHTML,
+    @JsonKey() required Repository repository,
   }) = _Issue;
 
   factory Issue.fromJson(Map<String, dynamic> json) => _$IssueFromJson(json);
@@ -18,7 +18,7 @@ abstract class Issue with _$Issue {
 @freezed
 abstract class Repository with _$Repository {
   factory Repository({
-    @JsonKey() String nameWithOwner,
+    @JsonKey() required String nameWithOwner,
   }) = _Repository;
 
   factory Repository.fromJson(Map<String, dynamic> json) =>

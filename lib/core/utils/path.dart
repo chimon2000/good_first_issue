@@ -1,4 +1,4 @@
-T path<T>(String pathToSearch, obj) {
+T? path<T>(String pathToSearch, obj) {
   if (obj == null) {
     return null;
   }

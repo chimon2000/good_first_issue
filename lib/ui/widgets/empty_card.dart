@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class EmptyCard extends StatelessWidget {
   const EmptyCard({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -10,7 +10,7 @@ class EmptyCard extends StatelessWidget {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [],
+        children: const [],
       ),
     );
   }

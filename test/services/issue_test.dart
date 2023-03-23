@@ -1,17 +1,28 @@
 import 'package:good_first_issue/services/services.dart';
 import 'package:graphql/client.dart';
-import 'package:mockito/mockito.dart';
+
+import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
+import '../_util/mocks.dart';
+
 void main() {
-  MockGraphqlClient client;
+  late MockGraphqlClient client;
+  late MockQueryOptions options;
+
   setUp(() {
     client = MockGraphqlClient();
+    options = MockQueryOptions();
   });
   test('Correctly retrieve suggestions on searchVehicleSuggestions', () async {
     final issueService = IssueService(client);
-    when(client.query(any))
-        .thenAnswer((_) async => QueryResult(data: mockData));
+    when(() => client.query(any())).thenAnswer(
+      (_) async => QueryResult(
+        data: mockData,
+        options: options,
+        source: QueryResultSource.network,
+      ),
+    );
 
     var issueQueryResult =
         await issueService.getIssues(organization: "flutter", last: 2);
@@ -20,13 +31,18 @@ void main() {
   });
   test('Correctly throw error on searchVehicles', () async {
     final searchClient = IssueService(client);
-    when(client.query(any))
-        .thenAnswer((_) async => QueryResult(exception: OperationException()));
+    when(() => client.query(any())).thenAnswer(
+      (_) async => QueryResult(
+        data: mockData,
+        options: options,
+        source: QueryResultSource.network,
+      ),
+    );
 
     expect(
       () async =>
           await searchClient.getIssues(organization: "flutter", last: 2),
-      throwsA(allOf(TypeMatcher<OperationException>())),
+      throwsA(allOf(const TypeMatcher<OperationException>())),
     );
   });
 }

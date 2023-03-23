@@ -1,51 +1,68 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:async';
+
+import 'package:equatable/equatable.dart';
+import 'package:riverpod/riverpod.dart';
+
+import 'package:good_first_issue/app_providers.dart';
 import 'package:good_first_issue/core/utils/logger.dart';
 import 'package:good_first_issue/models/issue_query_result.dart';
-import 'package:good_first_issue/services/issue.dart';
-import 'package:remote_state/remote_state.dart';
-import 'package:state_notifier/state_notifier.dart';
 
-class IssueStore extends StateNotifier<RemoteState<IssuesQueryResult>>
-    with LocatorMixin, ReporterMixin {
-  IssueService get issueService => read<IssueService>();
+final issueStoreProvider =
+    AsyncNotifierProviderFamily<IssueStore, IssuesQueryResult, IssueStoreArgs?>(
+  IssueStore.new,
+);
 
-  IssueStore() : super(RemoteState<IssuesQueryResult>.initial());
+class IssueStore extends FamilyAsyncNotifier<IssuesQueryResult, IssueStoreArgs?>
+    with ReporterMixin {
+  @override
+  FutureOr<IssuesQueryResult> build(IssueStoreArgs? arg) async {
+    final issueService = ref.watch(issueServiceProvider);
 
-   Future<void> fetchMoreIssues({String organization, int last = 25, String after}) async {
-    state = state.maybeWhen(
-        success: (state) =>
-            RemoteState.success(state.copyWith(isFetchingMore: true)),
-        orElse: () => RemoteState.loading());
+    var result = await issueService.getIssues(
+      organization: arg?.organization ?? 'flutter',
+      last: arg?.last ?? 25,
+    );
 
-    try {
-      var result = await issueService.getIssues(
-          organization: organization, last: last, after: after);
-
-      state = state.maybeWhen(
-          success: (state) => RemoteState.success(state.copyWith(
-                issues: [...state.issues, ...result.issues],
-                endCursor: result.endCursor,
-                hasNextPage: result.hasNextPage,
-                count: result.count + state.count,
-                isFetchingMore: false,
-              )),
-          orElse: () => RemoteState.success(result));
-    } catch (e) {
-      logError(e);
-      state = RemoteState.error();
-    }
+    return result;
   }
 
-  Future<void> getIssues({String organization, int last = 25}) async {
-    state = RemoteState.loading();
+  Future<void> fetchMoreIssues({int last = 25}) async {
+    final issueService = ref.watch(issueServiceProvider);
+
+    await update((p0) => p0.copyWith(isFetchingMore: true));
 
     try {
-      var result =
-          await issueService.getIssues(organization: organization, last: last);
+      await update((state) async {
+        var result = await issueService.getIssues(
+          organization: arg?.organization ?? 'flutter',
+          last: last,
+          after: state.endCursor,
+        );
 
-      state = RemoteState.success(result);
+        return state.copyWith(
+          issues: [...state.issues, ...result.issues],
+          endCursor: result.endCursor,
+          hasNextPage: result.hasNextPage,
+          count: result.count + state.count,
+          isFetchingMore: false,
+        );
+      });
     } catch (e) {
       logError(e);
-      state = RemoteState.error();
+      rethrow;
     }
   }
+}
+
+class IssueStoreArgs extends Equatable {
+  const IssueStoreArgs({
+    required this.organization,
+    this.last = 25,
+  });
+  final String organization;
+  final int last;
+
+  @override
+  List<Object> get props => [organization, last];
 }
