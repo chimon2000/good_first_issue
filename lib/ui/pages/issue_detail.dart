@@ -23,7 +23,7 @@ class IssueDetailPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final TextTheme textTheme = Theme.of(context).textTheme;
     final buttonColor = Theme.of(context).colorScheme.secondary;
-    final buttonTextColor = Theme.of(context).accentTextTheme.labelLarge?.color;
+    final buttonTextColor = Theme.of(context).textTheme.labelLarge?.color;
 
     var url = issue.url;
 
