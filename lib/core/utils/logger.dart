@@ -11,12 +11,12 @@ mixin ReporterMixin {
 
   @protected
   logWarning(String message, {Map<String, String>? extras}) {
-    lumberdash.logWarning("$name - $message");
+    lumberdash.logWarning("$name - $message", extras: extras);
   }
 
   @protected
   logError(dynamic exception, {StackTrace? st}) {
-    lumberdash.logError(exception, stacktrace: exception);
+    lumberdash.logError(exception, stacktrace: st);
   }
 
   @protected

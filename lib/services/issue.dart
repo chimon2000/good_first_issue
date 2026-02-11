@@ -64,7 +64,7 @@ class IssueService with ReporterMixin {
       logWarning(
         error.message,
         extras: {
-          'path': error.path!.join(', '),
+          'path': error.path?.join(', ') ?? '',
           'extensions': jsonEncode(error.extensions),
         },
       );
@@ -74,29 +74,4 @@ class IssueService with ReporterMixin {
   }
 }
 
-String _searchQuery = r'''
-      query ReadIssues($nQuery: String!, $nLast: Int, $nAfter: String) {
-        search(query: $nQuery, type: ISSUE, last: $nLast, after: $nAfter) {
-          pageInfo {
-            endCursor,
-            hasNextPage
-          }
-          issueCount
-          edges {
-            node {
-              ... on Issue {
-                id,
-                title,
-                body,
-                bodyHTML,
-                url,
-                repository {
-                  id
-                  nameWithOwner
-                }
-              }
-            }
-          }
-        }
-      }
-    ''';
+

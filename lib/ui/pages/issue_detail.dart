@@ -23,7 +23,7 @@ class IssueDetailPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final TextTheme textTheme = Theme.of(context).textTheme;
     final buttonColor = Theme.of(context).colorScheme.secondary;
-    final buttonTextColor = Theme.of(context).accentTextTheme.labelLarge?.color;
+    final buttonTextColor = Theme.of(context).colorScheme.onSecondary;
 
     var url = issue.url;
 
@@ -46,8 +46,10 @@ class IssueDetailPage extends ConsumerWidget {
               child: SingleChildScrollView(
                 child: MarkdownBody(
                   data: markdown,
-                  onTapLink: (url, __, ___) {
-                    ref.read(linkServiceProvider).launchLink(url);
+                  onTapLink: (_, href, __) {
+                    if (href != null) {
+                      ref.read(linkServiceProvider).launchLink(href);
+                    }
                   },
                 ),
               ),
