@@ -30,6 +30,7 @@ dependencies:
   launch_review: ^3.0.1
   lumberdash: ^3.0.0
   meta: ^1.8.0
+  path_provider: ^2.1.5
   riverpod: ^2.3.2
   share_plus: ^6.3.1
   url_launcher: ^6.1.10
