@@ -73,3 +73,5 @@ build/
 **/developer_key.jks
 **/key.properties
 .flutter-plugins-dependencies
+ios/Flutter/ephemeral/flutter_lldb_helper.py
+ios/Flutter/ephemeral/flutter_lldbinit
