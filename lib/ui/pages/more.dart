@@ -2,8 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:good_first_issue/app_providers.dart';
-
 import 'package:good_first_issue/ui/pages/about.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MorePage extends ConsumerWidget {
   const MorePage({super.key});
@@ -49,6 +49,18 @@ class MorePage extends ConsumerWidget {
             subtitle: const Text('Contributors and support'),
             onTap: () {
               Navigator.of(context).pushReplacement(AboutPage.route());
+            },
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.logout),
+            title: const Text('Sign out'),
+            onTap: () async {
+              await ref.read(tokenStorageProvider).deleteGitHubToken();
+              await Supabase.instance.client.auth.signOut();
+              if (context.mounted) {
+                Navigator.of(context).popUntil((route) => route.isFirst);
+              }
             },
           ),
         ],
