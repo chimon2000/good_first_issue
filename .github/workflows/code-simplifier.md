@@ -71,7 +71,7 @@ Use GitHub tools to:
 For each merged PR or recent commit:
 - Use `pull_request_read` with `method: get_files` to list changed files
 - Use `get_commit` to see file changes in recent commits
-- Focus on source code files (`.go`, `.js`, `.ts`, `.tsx`, `.cjs`, `.py`, etc.)
+- Focus on source code files (`.dart`, `.js`, `.ts`, `.tsx`, `.cjs`, `.py`, etc.)
 - Exclude test files, lock files, and generated files
 
 ### 1.3 Determine Scope
@@ -91,7 +91,7 @@ If **files were changed**, proceed to Phase 2.
 
 Before simplifying, review the project's coding standards from relevant documentation:
 
-- For Go projects: Check `AGENTS.md`, `DEVGUIDE.md`, or similar files
+- For Dart projects: Check `AGENTS.md`, `CLAUDE.md.md`, or similar files
 - For JavaScript/TypeScript: Look for `CLAUDE.md`, style guides, or coding conventions
 - For Python: Check for style guides, PEP 8 adherence, or project-specific conventions
 
@@ -105,8 +105,7 @@ For **JavaScript/TypeScript** projects:
 - Use proper error handling patterns (avoid try/catch when possible)
 - Maintain consistent naming conventions
 
-For **Go** projects:
-- Use `any` instead of `interface{}`
+For **Dart** projects:
 - Follow console formatting for CLI output
 - Use semantic type aliases for domain concepts
 - Prefer small, focused files (200-500 lines ideal)
@@ -194,8 +193,8 @@ Use the **edit** tool to modify files:
 After making simplifications, run the project's test suite to ensure no functionality was broken:
 
 ```bash
-# For Go projects
-make test-unit
+# For Dart projects
+flutter test
 
 # For JavaScript/TypeScript projects
 npm test
@@ -215,8 +214,8 @@ If tests fail:
 Ensure code style is consistent:
 
 ```bash
-# For Go projects
-make lint
+# For Dart projects
+flutter analyze
 
 # For JavaScript/TypeScript projects
 npm run lint
@@ -232,8 +231,8 @@ Fix any linting issues introduced by the simplifications.
 Verify the project still builds successfully:
 
 ```bash
-# For Go projects
-make build
+# For Dart projects
+flutter build
 
 # For JavaScript/TypeScript projects
 npm run build
@@ -272,13 +271,13 @@ This PR simplifies recently modified code to improve clarity, consistency, and m
 
 ### Files Simplified
 
-- `path/to/file1.go` - [Brief description of improvements]
+- `path/to/file1.dart` - [Brief description of improvements]
 - `path/to/file2.js` - [Brief description of improvements]
 
 ### Improvements Made
 
 1. **Reduced Complexity**
-   - Simplified nested conditionals in `file1.go`
+   - Simplified nested conditionals in `file1.dart`
    - Extracted helper function for repeated logic
 
 2. **Enhanced Clarity**
