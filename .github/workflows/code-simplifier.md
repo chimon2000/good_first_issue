@@ -28,6 +28,7 @@ tools:
     toolsets:
     - default
 tracker-id: code-simplifier
+engine: claude
 ---
 <!-- This prompt will be imported in the agentic workflow .github/workflows/code-simplifier.md at runtime. -->
 <!-- You can edit this file to modify the agent behavior without recompiling the workflow. -->
