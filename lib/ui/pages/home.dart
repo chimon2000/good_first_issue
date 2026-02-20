@@ -71,14 +71,35 @@ class HomePageState extends ConsumerState<HomePage> {
             initialOrganization: 'flutter',
           ),
           Flexible(
-            child: queryResultState.when(
-              loading: () => const InitialCard(),
-              data: (state) => state.issues.isEmpty
-                  ? const EmptyCard()
-                  : IssueListDataView(
-                      issuesQueryResult: state,
-                    ),
-              error: (error, _) => Text(error.toString()),
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              switchInCurve: Curves.easeInOut,
+              switchOutCurve: Curves.easeInOut,
+              transitionBuilder: (child, animation) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: SlideTransition(
+                    position: Tween<Offset>(
+                      begin: const Offset(0.0, 0.1),
+                      end: Offset.zero,
+                    ).animate(animation),
+                    child: child,
+                  ),
+                );
+              },
+              child: queryResultState.when(
+                loading: () => const EmptyCard(key: ValueKey('loading')),
+                data: (state) => state.issues.isEmpty
+                    ? EmptyCard(key: ValueKey('empty-${ref.watch(currentOrganizationProvider)}'))
+                    : IssueListDataView(
+                        key: ValueKey('data-${ref.watch(currentOrganizationProvider)}-${state.issues.length}'),
+                        issuesQueryResult: state,
+                      ),
+                error: (error, _) => Text(
+                    error.toString(),
+                    key: ValueKey('error-$error'),
+                  ),
+              ),
             ),
           ),
         ],
