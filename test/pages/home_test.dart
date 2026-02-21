@@ -47,9 +47,9 @@ void main() {
     );
 
     // Verify that loading displays.
-    expect(find.byType(InitialCard), findsOneWidget);
+    expect(find.byType(EmptyCard), findsOneWidget);
 
-    await tester.pump();
+    await tester.pumpAndSettle();
 
     expect(find.byType(EmptyCard), findsOneWidget);
 
@@ -76,7 +76,7 @@ void main() {
     );
 
     // Verify that loading displays.
-    expect(find.byType(InitialCard), findsOneWidget);
+    expect(find.byType(EmptyCard), findsOneWidget);
 
     await tester.tap(find.byIcon(Icons.more_vert));
 
@@ -115,9 +115,9 @@ void main() {
     );
 
     // Verify that loading displays.
-    expect(find.byType(InitialCard), findsOneWidget);
+    expect(find.byType(EmptyCard), findsOneWidget);
 
-    await tester.pump();
+    await tester.pumpAndSettle();
 
     expect(find.text(issues[0].title), findsOneWidget);
 
