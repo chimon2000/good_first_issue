@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:good_first_issue/app_providers.dart';
 
-class AboutPage extends StatelessWidget {
+class AboutPage extends ConsumerWidget {
   const AboutPage({super.key});
 
   static Route<dynamic> route() {
@@ -11,7 +12,7 @@ class AboutPage extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     var theme = Theme.of(context);
     var textTheme = theme.textTheme;
     const contactInfo = [
@@ -74,11 +75,7 @@ class AboutPage extends StatelessWidget {
                     subtitle?.isNotEmpty ?? false ? Text(subtitle!) : null,
                 onTap: url?.isNotEmpty ?? false
                     ? () async {
-                        if (await canLaunchUrl(Uri.parse(url!))) {
-                          await launchUrl(Uri.parse(url));
-                        } else {
-                          throw 'Could not launch $url';
-                        }
+                        await ref.read(linkServiceProvider).launchLink(url!);
                       }
                     : null,
               );
