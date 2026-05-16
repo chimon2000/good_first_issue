@@ -72,6 +72,11 @@ var projects = {
     "name": "Gatsby",
     "q": "org:gatsbyjs is:issue is:open label:\"good first issue\""
   },
+  "open-source-starter-lab": {
+    "name": "Open Source Starter Lab",
+    "q":
+        "repo:P-r-e-m-i-u-m/open-source-starter-lab is:issue is:open label:\"good first issue\""
+  },
   "easygraphql": {
     "name": "EasyGraphQL",
     "q": "org:easygraphql is:issue is:open label:\"good first issue\""
