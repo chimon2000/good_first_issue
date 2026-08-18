@@ -108,3 +108,8 @@ var projects = {
         "repo:react-navigation/react-navigation is:issue is:open label:\"good first issue\""
   }
 };
+  Project(
+    name: 'Open Source Starter Lab',
+    description: 'Beginner-friendly repository with curated good first issues for Git, GitHub, pull requests, CI, TypeScript CLI work, and maintainer practice.',
+    q: 'repo:P-r-e-m-i-u-m/open-source-starter-lab is:issue is:open label:"good first issue"',
+  ),
