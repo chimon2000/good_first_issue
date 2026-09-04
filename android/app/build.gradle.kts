@@ -17,7 +17,8 @@ if (keystoreExists) {
 
 android {
     namespace = "app.goodfirstissue.app"
-    compileSdk = flutter.compileSdkVersion
+    // ponytail: pinned past Flutter-managed 36 — flutter_secure_storage 11 requires compileSdk 37
+    compileSdk = 37
     ndkVersion = flutter.ndkVersion
 
     compileOptions {

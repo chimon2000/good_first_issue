@@ -54,7 +54,9 @@ class IssueDetailPage extends ConsumerWidget {
                 ),
               ),
             ),
-            ButtonBar(
+            OverflowBar(
+              spacing: 8.0,
+              overflowSpacing: 4.0,
               children: <Widget>[
                 ElevatedButton(
                   key: const Key(startButtonKey),

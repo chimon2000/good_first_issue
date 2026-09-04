@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
 class InitialCard extends StatelessWidget {
-  const InitialCard({
-    Key? key,
-  }) : super(key: key);
+  const InitialCard({super.key});
 
   @override
   Widget build(BuildContext context) {

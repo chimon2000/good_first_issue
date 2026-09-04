@@ -7,19 +7,68 @@ on:
     branches: [ master ]
 
 jobs:
+  analyze:
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.38.7'
+        channel: 'stable'
+        cache: true
+    - name: Install app dependencies
+      run: flutter pub get
+    - name: Install sub-package dependencies
+      run: flutter pub get
+      working-directory: packages/github_api
+    - name: Analyze app
+      run: flutter analyze
+
   test:
     runs-on: macos-latest
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
     - name: Install Flutter
-      uses: subosito/flutter-action@v1.3.2
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.38.7'
+        channel: 'stable'
+        cache: true
     - name: Install app dependencies
       run: flutter pub get
+    - name: Install sub-package dependencies
+      run: flutter pub get
+      working-directory: packages/github_api
     - name: Test app
       run: flutter test --coverage
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v5
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-        file: coverage/lcov.info
+        files: coverage/lcov.info
+        fail_ci_if_error: false
+
+  build:
+    runs-on: macos-latest
+    needs: [analyze, test]
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.38.7'
+        channel: 'stable'
+        cache: true
+    - name: Install app dependencies
+      run: flutter pub get
+    - name: Install sub-package dependencies
+      run: flutter pub get
+      working-directory: packages/github_api
+    - name: Build Android (debug)
+      run: flutter build apk --debug
+    - name: Build iOS (no codesign)
+      run: flutter build ios --no-codesign

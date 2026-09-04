@@ -11,11 +11,16 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   putLumberdashToWork(withClients: [ColorizeLumberdash()]);
 
-  const supabaseAnonKey = String.fromEnvironment('SUPABASE_ANON_KEY');
+  const supabaseKey = String.fromEnvironment('SUPABASE_KEY');
+
+  assert(
+    supabaseKey.isNotEmpty,
+    'SUPABASE_KEY environment variable is not set. Please provide your Supabase anon key.',
+  );
 
   await Supabase.initialize(
     url: 'https://ymrlelwcixhztnryludp.supabase.co',
-    anonKey: supabaseAnonKey,
+    publishableKey: supabaseKey,
   );
 
   runApp(const ProviderScope(child: GoodFirstIssueApp()));
@@ -30,9 +35,7 @@ class GoodFirstIssueApp extends ConsumerWidget {
 
     return MaterialApp(
       title: 'Good First Issue',
-      theme: ThemeData(
-        primarySwatch: Colors.blueGrey,
-      ),
+      theme: ThemeData(colorSchemeSeed: Colors.blueGrey),
       home: authState.when(
         data: (state) {
           if (state.session != null) {
@@ -40,9 +43,8 @@ class GoodFirstIssueApp extends ConsumerWidget {
           }
           return const LoginPage();
         },
-        loading: () => const Scaffold(
-          body: Center(child: CircularProgressIndicator()),
-        ),
+        loading: () =>
+            const Scaffold(body: Center(child: CircularProgressIndicator())),
         error: (_, __) => const LoginPage(),
       ),
     );

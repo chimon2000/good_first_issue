@@ -3,10 +3,10 @@ import 'package:good_first_issue/models/projects.dart';
 
 class SearchPanel extends StatefulWidget {
   const SearchPanel({
-    Key? key,
+    super.key,
     required this.onSearchChanged,
     required this.initialOrganization,
-  }) : super(key: key);
+  });
 
   final ValueChanged<String?> onSearchChanged;
   final String initialOrganization;
@@ -68,15 +68,21 @@ class SearchPanelState extends State<SearchPanel> {
                       SizedBox(
                         height: 220,
                         child: SingleChildScrollView(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: organizations(field),
+                          child: RadioGroup<String>(
+                            groupValue: field.value,
+                            onChanged: field.didChange,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: organizations(),
+                            ),
                           ),
                         ),
                       ),
                       const Divider(height: 2.0),
-                      ButtonBar(
+                      OverflowBar(
+                        spacing: 8.0,
+                        overflowSpacing: 4.0,
                         children: <Widget>[
                           TextButton(
                             onPressed: close,
@@ -84,7 +90,7 @@ class SearchPanelState extends State<SearchPanel> {
                           ),
                           TextButton(
                             style: ButtonStyle(
-                                foregroundColor: MaterialStateColor.resolveWith(
+                                foregroundColor: WidgetStateColor.resolveWith(
                                     (states) => buttonColor,),),
                             onPressed: () {
                               formKey.currentState?.save();
@@ -110,7 +116,7 @@ class SearchPanelState extends State<SearchPanel> {
   }
 }
 
-List<Widget> organizations(FormFieldState<String> field) {
+List<Widget> organizations() {
   List<Widget> widgets = [];
   for (var key in projects.keys) {
     var title = projects[key]!['name']!;
@@ -128,8 +134,6 @@ List<Widget> organizations(FormFieldState<String> field) {
             child: RadioListTile<String>(
               value: value,
               title: Text(title),
-              groupValue: field.value,
-              onChanged: field.didChange,
             ),
           ),
         ],

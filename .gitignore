@@ -64,6 +64,7 @@ build/
 **/ios/Runner/GeneratedPluginRegistrant.*
 
 # Exceptions to above rules.
+!/ios/Podfile.lock
 !**/ios/**/default.mode1v3
 !**/ios/**/default.mode2v3
 !**/ios/**/default.pbxuser
@@ -75,3 +76,6 @@ build/
 .flutter-plugins-dependencies
 ios/Flutter/ephemeral/flutter_lldb_helper.py
 ios/Flutter/ephemeral/flutter_lldbinit
+
+env/*.env
+.opencode/plans/*
