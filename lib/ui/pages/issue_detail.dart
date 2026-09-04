@@ -46,7 +46,7 @@ class IssueDetailPage extends ConsumerWidget {
               child: SingleChildScrollView(
                 child: MarkdownBody(
                   data: markdown,
-                  onTapLink: (_, href, __) {
+                  onTapLink: (_, href, _) {
                     if (href != null) {
                       ref.read(linkServiceProvider).launchLink(href);
                     }
