@@ -65,8 +65,9 @@ class HomePageState extends ConsumerState<HomePage> {
         children: <Widget>[
           SearchPanel(
             onSearchChanged: (organization) {
-              ref.read(currentOrganizationProvider.notifier).state =
-                  organization ?? 'flutter';
+              ref.read(currentOrganizationProvider.notifier).set(
+                    organization ?? 'flutter',
+                  );
             },
             initialOrganization: 'flutter',
           ),
@@ -132,11 +133,18 @@ class IssueListDataView extends ConsumerWidget {
   }
 }
 
-final currentOrganizationProvider = StateProvider<String>((ref) {
-  return 'flutter';
-});
+class OrgNotifier extends Notifier<String> {
+  @override
+  String build() => 'flutter';
 
-final scrollControllerProvider = Provider.autoDispose<ScrollController>((ref) {
+  void set(String value) => state = value;
+}
+
+final currentOrganizationProvider =
+    NotifierProvider<OrgNotifier, String>(OrgNotifier.new);
+
+final scrollControllerProvider =
+    Provider.autoDispose<ScrollController>((ref) {
   final controller = ScrollController();
   ref.onDispose(() {
     controller.dispose();

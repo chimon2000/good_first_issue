@@ -50,7 +50,7 @@ void main() {
             repository: Repository(nameWithOwner: 'owner'),
           ),
         ),
-        overrides: [linkServiceProvider.overrideWithValue(mockLinkService)],
+        overrides: [linkServiceProvider.overrideWith((_) => mockLinkService)],
       ),
     );
 
@@ -77,7 +77,7 @@ void main() {
             repository: Repository(nameWithOwner: 'owner'),
           ),
         ),
-        overrides: [linkServiceProvider.overrideWithValue(mockLinkService)],
+        overrides: [linkServiceProvider.overrideWith((_) => mockLinkService)],
       ),
     );
 

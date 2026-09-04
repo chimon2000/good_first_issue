@@ -86,7 +86,7 @@ final githubTokenProvider = FutureProvider<String?>((ref) async {
 
 final graphQLClientProvider = Provider<GraphQLClient>((ref) {
   final tokenAsync = ref.watch(githubTokenProvider);
-  final token = tokenAsync.valueOrNull;
+  final token = tokenAsync.value;
 
   HttpLink link = HttpLink(
     'https://api.github.com/graphql',

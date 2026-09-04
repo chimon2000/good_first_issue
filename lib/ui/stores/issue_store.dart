@@ -8,15 +8,19 @@ import 'package:good_first_issue/app_providers.dart';
 import 'package:good_first_issue/core/utils/logger.dart';
 import 'package:good_first_issue/models/issue_query_result.dart';
 
-final issueStoreProvider =
-    AsyncNotifierProviderFamily<IssueStore, IssuesQueryResult, IssueStoreArgs?>(
+final issueStoreProvider = AsyncNotifierProvider.family<
+    IssueStore, IssuesQueryResult, IssueStoreArgs?>(
   IssueStore.new,
 );
 
-class IssueStore extends FamilyAsyncNotifier<IssuesQueryResult, IssueStoreArgs?>
+class IssueStore extends AsyncNotifier<IssuesQueryResult>
     with ReporterMixin {
+  IssueStore(this.arg);
+
+  final IssueStoreArgs? arg;
+
   @override
-  FutureOr<IssuesQueryResult> build(IssueStoreArgs? arg) async {
+  FutureOr<IssuesQueryResult> build() async {
     final issueService = ref.watch(issueServiceProvider);
 
     var result = await issueService.getIssues(
