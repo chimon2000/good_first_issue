@@ -28,8 +28,14 @@ class MorePage extends ConsumerWidget {
             ListTile(
               leading: const Icon(Icons.star),
               title: Text('Rate on $platformStore'),
-              onTap: () {
-                ref.read(reviewServiceProvider).launchReview();
+              onTap: () async {
+                // Best-effort: a failed rate prompt must never break this page
+                // (e.g. MissingPluginException on unsupported desktop platforms).
+                try {
+                  await ref.read(reviewServiceProvider).launchReview();
+                } catch (e) {
+                  debugPrint('launchReview failed: $e');
+                }
               },
             ),
           ListTile(

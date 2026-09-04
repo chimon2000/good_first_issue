@@ -12,6 +12,6 @@ class LinkService {
   }
 
   Future<void> share(String messageWithLink) async {
-    await Share.share(messageWithLink);
+    await SharePlus.instance.share(ShareParams(text: messageWithLink));
   }
 }
