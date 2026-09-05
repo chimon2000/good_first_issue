@@ -13,10 +13,11 @@ void main() async {
 
   const supabaseKey = String.fromEnvironment('SUPABASE_KEY');
 
-  assert(
-    supabaseKey.isNotEmpty,
-    'SUPABASE_KEY environment variable is not set. Please provide your Supabase anon key.',
-  );
+  if (supabaseKey.isEmpty) {
+    throw StateError(
+      'SUPABASE_KEY is not set. Pass it via --dart-define=SUPABASE_KEY=<your Supabase anon key>.',
+    );
+  }
 
   await Supabase.initialize(
     url: 'https://ymrlelwcixhztnryludp.supabase.co',
