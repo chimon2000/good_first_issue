@@ -80,13 +80,13 @@ final githubTokenProvider = FutureProvider<String?>((ref) async {
       return null;
     },
     loading: () => null,
-    error: (_, __) => null,
+    error: (_, _) => null,
   );
 });
 
 final graphQLClientProvider = Provider<GraphQLClient>((ref) {
   final tokenAsync = ref.watch(githubTokenProvider);
-  final token = tokenAsync.valueOrNull;
+  final token = tokenAsync.value;
 
   HttpLink link = HttpLink(
     'https://api.github.com/graphql',

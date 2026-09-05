@@ -17,12 +17,17 @@ if (keystoreExists) {
 
 android {
     namespace = "app.goodfirstissue.app"
-    compileSdk = flutter.compileSdkVersion
+    // ponytail: pinned past Flutter-managed 36 — flutter_secure_storage 11 requires compileSdk 37
+    compileSdk = 37
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
 
     defaultConfig {
@@ -35,8 +40,9 @@ android {
 
     signingConfigs {
         create("release") {
-            if (System.getenv("CI") != null) {
-                storeFile = file(System.getenv("CM_KEYSTORE_PATH") ?: "")
+            val cmKeystorePath = System.getenv("CM_KEYSTORE_PATH")
+            if (!cmKeystorePath.isNullOrBlank()) {
+                storeFile = file(cmKeystorePath)
                 storePassword = System.getenv("CM_KEYSTORE_PASSWORD")
                 keyAlias = System.getenv("CM_KEY_ALIAS")
                 keyPassword = System.getenv("CM_KEY_PASSWORD")
@@ -62,4 +68,3 @@ android {
 flutter {
     source = "../.."
 }
-

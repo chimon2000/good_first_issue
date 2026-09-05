@@ -46,7 +46,7 @@ class IssueDetailPage extends ConsumerWidget {
               child: SingleChildScrollView(
                 child: MarkdownBody(
                   data: markdown,
-                  onTapLink: (_, href, __) {
+                  onTapLink: (_, href, _) {
                     if (href != null) {
                       ref.read(linkServiceProvider).launchLink(href);
                     }
@@ -54,7 +54,9 @@ class IssueDetailPage extends ConsumerWidget {
                 ),
               ),
             ),
-            ButtonBar(
+            OverflowBar(
+              spacing: 8.0,
+              overflowSpacing: 4.0,
               children: <Widget>[
                 ElevatedButton(
                   key: const Key(startButtonKey),

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart';
 import 'package:good_first_issue/app_providers.dart';
 
 import 'package:good_first_issue/models/issue_query_result.dart';
 
 import 'package:mocktail/mocktail.dart';
-
-import 'package:dartx/dartx.dart';
 
 import 'mocks.dart';
 
@@ -57,11 +56,20 @@ List<Override> _setupProviders(List<Override> overrides) {
 
   when(() => mockLinkService.launchLink(any())).thenAnswer((_) async {});
   when(() => mockLinkService.share(any())).thenAnswer((_) async {});
+  when(() => mockReviewService.launchReview()).thenAnswer((_) async {});
 
-  return [
+  return _deduplicate([
     ...overrides,
-    reviewServiceProvider.overrideWithValue(mockReviewService),
-    linkServiceProvider.overrideWithValue(mockLinkService),
-    issueServiceProvider.overrideWithValue(mockIssueService),
-  ].distinctBy((it) => it.runtimeType).toList();
+    reviewServiceProvider.overrideWith((_) => mockReviewService),
+    linkServiceProvider.overrideWith((_) => mockLinkService),
+    issueServiceProvider.overrideWith((_) => mockIssueService),
+  ]);
+}
+
+// ponytail: replaces dartx distinctBy — first wins, so caller overrides beat defaults.
+// Keyed on Override.origin: every overrideWith produces the same $ProviderOverride
+// runtimeType, so keying on runtimeType would keep only the first override.
+List<Override> _deduplicate(List<Override> overrides) {
+  final seen = <Object?>{};
+  return overrides.where((o) => seen.add(o.origin)).toList();
 }

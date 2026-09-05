@@ -44,8 +44,8 @@ test/
 # Install dependencies
 flutter pub get
 
-# Run the app (Supabase anon key is passed at compile time, not hardcoded)
-flutter run --dart-define=SUPABASE_ANON_KEY=<key>
+# Run the app (Supabase key is passed at compile time, not hardcoded)
+flutter run --dart-define=SUPABASE_KEY=<key>
 
 # Static analysis
 flutter analyze

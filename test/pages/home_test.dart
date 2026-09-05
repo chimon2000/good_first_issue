@@ -41,7 +41,7 @@ void main() {
       TestWrapper(
         const HomePage(),
         overrides: [
-          issueServiceProvider.overrideWithValue(mockIssueService),
+          issueServiceProvider.overrideWith((_) => mockIssueService),
         ],
       ),
     );
@@ -70,7 +70,7 @@ void main() {
       TestWrapper(
         const HomePage(),
         overrides: [
-          issueServiceProvider.overrideWithValue(mockIssueService),
+          issueServiceProvider.overrideWith((_) => mockIssueService),
         ],
       ),
     );
@@ -108,7 +108,7 @@ void main() {
     await tester.pumpWidget(
       TestWrapper(
         overrides: [
-          issueServiceProvider.overrideWithValue(mockIssueService),
+          issueServiceProvider.overrideWith((_) => mockIssueService),
         ],
         const HomePage(),
       ),

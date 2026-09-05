@@ -33,10 +33,10 @@ void main() {
 }
 
 class TestLogger with ReporterMixin {
-  testError() => logError(Error());
-  testWarning() => logWarning('warning');
-  testInfo() => logInfo('info');
-  testFatal() => logFatal('fatal');
+  void testError() => logError(Error());
+  void testWarning() => logWarning('warning');
+  void testInfo() => logInfo('info');
+  void testFatal() => logFatal('fatal');
 }
 
 class MockLumberdashClient extends Mock implements LumberdashClient {}

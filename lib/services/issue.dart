@@ -59,7 +59,7 @@ class IssueService with ReporterMixin {
     );
   }
 
-  _logOperationException(OperationException exception) {
+  void _logOperationException(OperationException exception) {
     for (var error in exception.graphqlErrors) {
       logWarning(
         error.message,
@@ -73,5 +73,4 @@ class IssueService with ReporterMixin {
     logError(exception);
   }
 }
-
 
